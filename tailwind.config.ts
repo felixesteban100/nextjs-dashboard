@@ -26,6 +26,9 @@ const config: Config = {
         },
       },
     },
+    animation: {
+      "shimmer": "shimmer 5s ease infinite"
+    }
   },
 
   plugins: [require('@tailwindcss/forms')],
