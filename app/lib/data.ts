@@ -9,7 +9,6 @@ import {
   Revenue,
 } from "./definitions";
 import { formatCurrency } from "./utils";
-
 import { unstable_noStore as noStore } from "next/cache";
 
 export async function fetchRevenue() {
@@ -171,7 +170,7 @@ export async function fetchInvoicesPages(query: string) {
   }
 }
 
-export async function fetchInvoiceById(id: string) {
+export async function fetchInvoiceById(id: string){
   noStore();
 
   try {
@@ -185,15 +184,18 @@ export async function fetchInvoiceById(id: string) {
       WHERE invoices.id = ${id};
     `;
 
-    const invoice = data.rows.map((invoice) => ({
-      ...invoice,
-      // Convert amount from cents to dollars
-      amount: invoice.amount / 100,
-    }));
+    const invoice = data.rows.map((invoice) => {
+      return {
+        ...invoice,
+        // Convert amount from cents to dollars
+        amount: invoice.amount / 100,
+      }
+    });
 
     return invoice[0];
   } catch (error) {
     console.error("Database Error:", error);
+    // throw new Error("Failed to fetch all invoice by id.");
   }
 }
 

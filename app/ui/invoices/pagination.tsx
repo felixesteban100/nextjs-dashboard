@@ -17,7 +17,7 @@ export default function Pagination({ totalPages }: { totalPages: number }) {
   function createPageURL(pageNumber: number | string): string{
     const params = new URLSearchParams(searchParams)
     params.set('page', pageNumber.toString())
-    console.log(`${pathname}?${params.toString()}`)
+    // console.log(`${pathname}?${params.toString()}`)
     return `${pathname}?${params.toString()}`
   }
 
@@ -79,8 +79,8 @@ function PaginationNumber({
     {
       'rounded-l-md': position === 'first' || position === 'single',
       'rounded-r-md': position === 'last' || position === 'single',
-      'z-10 bg-blue-600 border-blue-600 text-white': isActive,
-      'hover:bg-gray-100': !isActive && position !== 'middle',
+      'z-10 bg-primary border-primary text-primary-foreground': isActive,
+      'hover:bg-primary/20': !isActive && position !== 'middle',
       'text-gray-300': position === 'middle',
     },
   );
@@ -106,8 +106,8 @@ function PaginationArrow({
   const className = clsx(
     'flex h-10 w-10 items-center justify-center rounded-md border',
     {
-      'pointer-events-none text-gray-300': isDisabled,
-      'hover:bg-gray-100': !isDisabled,
+      'pointer-events-none text-foreground': isDisabled,
+      'hover:bg-primary hover:text-primary-foreground': !isDisabled,
       'mr-2 md:mr-4': direction === 'left',
       'ml-2 md:ml-4': direction === 'right',
     },
