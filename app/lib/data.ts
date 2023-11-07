@@ -9,7 +9,7 @@ import {
   Revenue,
   Character as CharacterType,
 } from "./definitions";
-import { filterCharacters, formatCurrency } from "./utils";
+import { formatCurrency } from "./utils";
 import { unstable_noStore as noStore } from "next/cache";
 import dbConnect from "./mongodb/db";
 ("./mongodb/db");
@@ -279,7 +279,7 @@ export async function fetchLast5Characters() {
     // const last5characters = await Character.find({}).limit(5);
     const characters = await Character.find<CharacterType>({});
 
-    return characters/* .slice().sort(() => Math.random() - 0.5) */;
+    return characters /* .slice().sort(() => Math.random() - 0.5) */;
   } catch (error) {
     console.error(`MongoDB Connection Error: ${error}`);
     throw Error(`MongoDB Connection Error: ${error}`);
@@ -291,56 +291,93 @@ export async function fetchLast5Characters() {
 export async function fetchCharacters(
   characterName: string,
   howMany: number,
-  side: string,
+  side: "All" | "good" | "bad" | "neutral",
   universe: string,
   team: string,
-  gender: string,
+  gender: "Both" | "Male" | "Female",
   race: string,
   includeNameOrExactName: boolean,
-  characterOrFullName: boolean
+  characterOrFullName: boolean,
+  currentPage: number
 ) {
   noStore();
-  
+
   try {
     await dbConnect();
-
-    const allCharacters = await Character.find({});
-
-    // console.table({ characterName, howMany, side, universe, team, gender, race, includeNameOrExactName, characterOrFullName })
-
-    const checkCharacterName =
-      typeof characterName !== "string" ? "" : characterName;
-    const checkHowMany = typeof howMany !== "string" ? 0 : parseInt(howMany);
-    const checkSide = typeof side !== "string" ? "All" : side;
-    const checkUniverse = typeof universe !== "string" ? "All" : universe;
-    const checkTeam = typeof team !== "string" ? "All" : team;
-    const checkGender = typeof gender !== "string" ? "All" : gender;
-    const checkRace = typeof race !== "string" ? "All" : race;
-    const checkIncludeNameOrExactName =
-      typeof includeNameOrExactName !== "string"
-        ? false
-        : includeNameOrExactName === "true";
-    const checkCharacterOrFullName =
-      typeof characterOrFullName !== "string"
-        ? false
-        : characterOrFullName === "true";
-
-    const charactersFounded = filterCharacters(
-      allCharacters,
-      checkCharacterName,
-      checkHowMany,
-      checkSide,
-      checkUniverse,
-      checkTeam,
-      checkGender,
-      checkRace,
-      checkIncludeNameOrExactName,
-      checkCharacterOrFullName
+    const offset = (currentPage - 1) * 8;
+    const queryOptions = getQueryOptions(
+      characterName,
+      side,
+      universe,
+      team,
+      gender,
+      race,
+      includeNameOrExactName,
+      characterOrFullName
     );
+    // console.log(queryOptions);
 
-    return charactersFounded;
+    const allCharacters = await Character.aggregate([
+      // {
+      //   $match: {
+      //     name: new RegExp(characterName, "i"),
+      //     "biography.publisher": universe,
+      //   },
+      // },
+      {
+        $match: { ...queryOptions },
+      },
+      // { $sample: { size: howMany } }, // shuffle
+    ]).skip(offset).limit(8);
+
+    const count = await Character.aggregate([{ $match: { ...queryOptions } }])
+
+    const totalPages = /* Math.floor( */Math.ceil(Number((count.length))) / 8/* ) */;
+
+    // await new Promise((resolve) => setTimeout(resolve, 7000));
+
+    return { allCharacters, totalPages };
   } catch (error) {
     console.error(`MongoDB Connection Error: ${error}`);
     throw Error(`MongoDB Connection Error: ${error}`);
   }
+}
+
+function getQueryOptions(
+  characterName: string,
+  side: "All" | "good" | "bad" | "neutral",
+  universe: string,
+  team: string,
+  gender: "Both" | "Male" | "Female",
+  race: string,
+  includeNameOrExactName: boolean,
+  characterOrFullName: boolean
+) {
+  const queryOptions: {
+    [key: string]: any;
+  } = {};
+
+  if (characterName !== "") {
+    if (characterOrFullName === false) {
+      queryOptions.name =
+        includeNameOrExactName === true
+          ? new RegExp(characterName, "ig")
+          : characterName;
+    } else {
+      queryOptions["biography.fullName"] =
+        includeNameOrExactName === true
+          ? new RegExp(characterName, "ig")
+          : characterName;
+    }
+  }
+  if (side !== "All") queryOptions["biography.alignment"] = side;
+  if (universe !== "All") {
+    queryOptions.universe = universe;
+    if (team !== "All")
+      queryOptions["connections.groupAffiliation"] = new RegExp(team, "ig");
+  }
+  if (gender !== "Both") queryOptions["appearance.gender"] = gender;
+  if (race !== "All") queryOptions["appearance.race"] = race;
+
+  return queryOptions;
 }

@@ -18,6 +18,8 @@ export default async function Page({
   searchParams?: {
     query?: string;
     page?: string;
+    pageCharacters?: string;
+    characterName?: string;
   }
 }) {
   const query = searchParams?.query || '';

@@ -103,7 +103,9 @@ function CharacterComponent({ currentCharacter, indexForTest }: CharacterProps) 
                     className={` absolute object-cover w-full h-full transition-opacity duration-200 ease-in-out rounded-md md:group-hover/item:blur-sm`}
                     src={currentCharacter.images.md}
                     alt={currentCharacter.name}
-                    loading='lazy'
+                    // loading='lazy'
+                    width={300}
+                    height={300}
                 />
                 <div
                     // className={`absolute z-[100] h-[80%] px-5 -translate-y-[18rem] lg:-translate-y-[20rem] group/edit md:invisible group-hover/item:visible transition delay-150 duration-300 ease-in-out flex flex-col justify-between gap-5`}
@@ -113,7 +115,8 @@ function CharacterComponent({ currentCharacter, indexForTest }: CharacterProps) 
                     {/* character_name */}
                     <h2
                         //${inView ? "animate-scaleForwardEntranceCardInfo" : "animate-scaleForwardExitCardInfo"}
-                        className={` font-bold text-muted-background text-xl xl:text-2xl`}>
+                        className={` font-bold text-muted-background text-xl xl:text-2xl`}
+                    >
                         {currentCharacter.name}
                     </h2>
                     <Image
@@ -125,7 +128,9 @@ function CharacterComponent({ currentCharacter, indexForTest }: CharacterProps) 
                         `}
                         src={publisherIMG(currentCharacter.biography.publisher)}
                         alt={`Logo ${currentCharacter.biography.publisher}`}
-                        loading="lazy"
+                        // loading="lazy"
+                        width={300}
+                        height={300}
                     />
                     {/*  {currentCharacter.biography.publisher === "DC Comics" || currentCharacter.biography.publisher === "Warner Bros" || currentCharacter.biography.publisher === "Microsoft"
                         ? <img className='h-[3rem] w-[3rem] sm:h-[5rem] sm:w-[5rem] md:h-[5rem] md:w-[5rem] lg:h-[5rem] lg:w-[5rem]' src={publisherIMG(currentCharacter.biography.publisher)} alt={`Logo ${currentCharacter.biography.publisher}`} loading="lazy" />

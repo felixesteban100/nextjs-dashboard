@@ -11,6 +11,15 @@ const nextConfig = {
         };
         return config;
       }, */
+      images: {
+        // domains: ['cdn.jsdelivr.net', 'upload.wikimedia.org'], //make it 'your-domain.com'
+        remotePatterns: [
+          {
+            // protocol: "https",
+            hostname: "**",
+          },
+        ],
+      },
 };
 
 module.exports = nextConfig;
