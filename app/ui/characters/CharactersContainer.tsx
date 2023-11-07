@@ -7,7 +7,8 @@ function CharactersContainer({ children }: CharactersContainerProps) {
     return (
         <div
         //min-h-[82vh] lg:mt-7 m-0 md:min-h-[85vh] pt-[5rem] md:pt-[2rem] 
-            className={
+        // grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 
+        className={
                 `
                 min-h-fit 
                 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 

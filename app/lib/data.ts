@@ -272,22 +272,6 @@ export async function getUser(email: string) {
   }
 }
 
-export async function fetchLast5Characters() {
-  noStore();
-  try {
-    await dbConnect();
-    // const last5characters = await Character.find({}).limit(5);
-    const characters = await Character.find<CharacterType>({});
-
-    return characters /* .slice().sort(() => Math.random() - 0.5) */;
-  } catch (error) {
-    console.error(`MongoDB Connection Error: ${error}`);
-    throw Error(`MongoDB Connection Error: ${error}`);
-  }
-
-  // const characters = await Character.find({}).limit(5)
-}
-
 export async function fetchCharacters(
   characterName: string,
   howMany: number,
@@ -301,10 +285,13 @@ export async function fetchCharacters(
   currentPage: number
 ) {
   noStore();
+  const CHARACTERS_PER_PAGE = 8;
 
   try {
     await dbConnect();
-    const offset = (currentPage - 1) * 8;
+
+    const offset = (currentPage - 1) * CHARACTERS_PER_PAGE;
+
     const queryOptions = getQueryOptions(
       characterName,
       side,
@@ -318,23 +305,33 @@ export async function fetchCharacters(
     // console.log(queryOptions);
 
     const allCharacters = await Character.aggregate([
-      // {
-      //   $match: {
-      //     name: new RegExp(characterName, "i"),
-      //     "biography.publisher": universe,
-      //   },
-      // },
-      {
-        $match: { ...queryOptions },
-      },
+      { $match: { ...queryOptions } },
       // { $sample: { size: howMany } }, // shuffle
-    ]).skip(offset).limit(8);
+    ])
+      .skip(offset)
+      .limit(4);
 
-    const count = await Character.aggregate([{ $match: { ...queryOptions } }])
 
-    const totalPages = /* Math.floor( */Math.ceil(Number((count.length))) / 8/* ) */;
+    // this isn't giving the meant value
+    const totalPages = Math.floor(
+      (
+        await Character.aggregate([
+          { $match: { ...queryOptions } },
+          // { $sample: { size: howMany } },
+        ])
+      ).length / CHARACTERS_PER_PAGE
+    );
 
+    
     // await new Promise((resolve) => setTimeout(resolve, 7000));
+    
+    /* console.log("totalPages", totalPages);
+    console.log("characters", (
+      await Character.aggregate([
+        { $match: { ...queryOptions } },
+        { $sample: { size: howMany } },
+      ])
+    ).length); */
 
     return { allCharacters, totalPages };
   } catch (error) {

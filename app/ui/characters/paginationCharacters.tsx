@@ -89,7 +89,8 @@ function PaginationNumber({
     <div className={className}>{page}</div>
   ) : (
     <Link href={href} className={className}>
-      {typeof page === 'number' ? Math.floor(page) : Math.floor(Number(page))}
+      {/* {typeof page === 'number' ? Math.floor(page) : Math.floor(Number(page))} */}
+      {page}
     </Link>
   );
 }
@@ -106,7 +107,7 @@ function PaginationArrow({
   const className = clsx(
     'flex h-10 w-10 items-center justify-center rounded-md border',
     {
-      'pointer-events-none text-foreground': isDisabled,
+      'pointer-events-none text-foreground/30': isDisabled,
       'hover:bg-primary hover:text-primary-foreground': !isDisabled,
       'mr-2 md:mr-4': direction === 'left',
       'ml-2 md:ml-4': direction === 'right',

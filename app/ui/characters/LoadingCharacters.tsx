@@ -6,7 +6,7 @@ export default function LoadingCharacters() {
         <CharactersContainer>
             <>
                 {
-                    Array(8).fill(undefined).map((_, index) => {
+                    Array(4).fill(undefined).map((_, index) => {
                         return (
                             <div key={index}>
                                 <LoadingCharactersCard />
