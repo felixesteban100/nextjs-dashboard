@@ -1,5 +1,5 @@
 import { Character } from '@/app/lib/definitions';
-// import { publisherIMG/* , transitionImageCard */ } from '../functions';
+import Image from 'next/image';
 
 type CharacterProps = {
     currentCharacter: Character;
@@ -98,7 +98,7 @@ function CharacterComponent({ currentCharacter, indexForTest }: CharacterProps) 
                     relative`
                 }
             >
-                <img
+                <Image
                     //object-top
                     className={` absolute object-cover w-full h-full transition-opacity duration-200 ease-in-out rounded-md md:group-hover/item:blur-sm`}
                     src={currentCharacter.images.md}
@@ -116,7 +116,7 @@ function CharacterComponent({ currentCharacter, indexForTest }: CharacterProps) 
                         className={` font-bold text-muted-background text-xl xl:text-2xl`}>
                         {currentCharacter.name}
                     </h2>
-                    <img
+                    <Image
                         //${inView ? "animate-scaleForwardEntranceCardInfo" : "animate-scaleForwardExitCardInfo"}
                         className={`
                             ${currentCharacter.biography.publisher === "DC Comics" || currentCharacter.biography.publisher === "Warner Bros" || currentCharacter.biography.publisher === "Microsoft" ?
