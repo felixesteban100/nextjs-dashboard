@@ -7,9 +7,13 @@ import {
   LatestInvoiceRaw,
   User,
   Revenue,
+  Character as CharacterType,
 } from "./definitions";
-import { formatCurrency } from "./utils";
+import { filterCharacters, formatCurrency } from "./utils";
 import { unstable_noStore as noStore } from "next/cache";
+import dbConnect from "./mongodb/db";
+("./mongodb/db");
+import Character from "@/app/lib/mongodb/characterModel";
 
 export async function fetchRevenue() {
   // Add noStore() here prevent the response from being cached.
@@ -170,7 +174,7 @@ export async function fetchInvoicesPages(query: string) {
   }
 }
 
-export async function fetchInvoiceById(id: string){
+export async function fetchInvoiceById(id: string) {
   noStore();
 
   try {
@@ -189,7 +193,7 @@ export async function fetchInvoiceById(id: string){
         ...invoice,
         // Convert amount from cents to dollars
         amount: invoice.amount / 100,
-      }
+      };
     });
 
     return invoice[0];
@@ -247,6 +251,8 @@ export async function fetchFilteredCustomers(query: string) {
       total_paid: formatCurrency(customer.total_paid),
     }));
 
+    // await new Promise((resolve) => setTimeout(resolve, 7000));
+
     return customers;
   } catch (err) {
     console.error("Database Error:", err);
@@ -263,5 +269,78 @@ export async function getUser(email: string) {
   } catch (error) {
     console.error("Failed to fetch user:", error);
     throw new Error("Failed to fetch user.");
+  }
+}
+
+export async function fetchLast5Characters() {
+  noStore();
+  try {
+    await dbConnect();
+    // const last5characters = await Character.find({}).limit(5);
+    const characters = await Character.find<CharacterType>({});
+
+    return characters/* .slice().sort(() => Math.random() - 0.5) */;
+  } catch (error) {
+    console.error(`MongoDB Connection Error: ${error}`);
+    throw Error(`MongoDB Connection Error: ${error}`);
+  }
+
+  // const characters = await Character.find({}).limit(5)
+}
+
+export async function fetchCharacters(
+  characterName: string,
+  howMany: number,
+  side: string,
+  universe: string,
+  team: string,
+  gender: string,
+  race: string,
+  includeNameOrExactName: boolean,
+  characterOrFullName: boolean
+) {
+  noStore();
+  
+  try {
+    await dbConnect();
+
+    const allCharacters = await Character.find({});
+
+    // console.table({ characterName, howMany, side, universe, team, gender, race, includeNameOrExactName, characterOrFullName })
+
+    const checkCharacterName =
+      typeof characterName !== "string" ? "" : characterName;
+    const checkHowMany = typeof howMany !== "string" ? 0 : parseInt(howMany);
+    const checkSide = typeof side !== "string" ? "All" : side;
+    const checkUniverse = typeof universe !== "string" ? "All" : universe;
+    const checkTeam = typeof team !== "string" ? "All" : team;
+    const checkGender = typeof gender !== "string" ? "All" : gender;
+    const checkRace = typeof race !== "string" ? "All" : race;
+    const checkIncludeNameOrExactName =
+      typeof includeNameOrExactName !== "string"
+        ? false
+        : includeNameOrExactName === "true";
+    const checkCharacterOrFullName =
+      typeof characterOrFullName !== "string"
+        ? false
+        : characterOrFullName === "true";
+
+    const charactersFounded = filterCharacters(
+      allCharacters,
+      checkCharacterName,
+      checkHowMany,
+      checkSide,
+      checkUniverse,
+      checkTeam,
+      checkGender,
+      checkRace,
+      checkIncludeNameOrExactName,
+      checkCharacterOrFullName
+    );
+
+    return charactersFounded;
+  } catch (error) {
+    console.error(`MongoDB Connection Error: ${error}`);
+    throw Error(`MongoDB Connection Error: ${error}`);
   }
 }
