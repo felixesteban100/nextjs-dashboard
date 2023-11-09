@@ -11,14 +11,13 @@ function CharactersContainer({ children }: CharactersContainerProps) {
         className={
                 `
                 min-h-fit 
-                grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 
-                w-[90%] sm:w-[90%] md:w-[90%] lg:w-[70%] 
+                w-[100%] sm:w-[90%] md:w-[90%] lg:w-[90%] 
                 h-[90%]
+                grid grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 
                 justify-center items-center
                 gap-10 gap-y-12 mx-auto 
                 mt-10
                 `
-                //
             }
         >
             {children}

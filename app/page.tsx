@@ -1,23 +1,26 @@
 import AcmeLogo from '@/app/ui/acme-logo';
 import { lusitana } from '@/app/ui/fonts'
 import { ModeToggle } from '@/components/mode-toogle';
-
 // import styles from '@/app/ui/home.module.css'
-import Link from 'next/link';
-import HeroImages from '@/app/ui/hero-images';
+import LoginForm from './ui/login-form';
+import HeroImages from './ui/hero-images';
 
 export default function Page() {
   return (
-    <main className="flex min-h-screen flex-col p-6">
-      <div className="flex h-20 shrink-0 items-end rounded-lg bg-primary p-4 md:h-52">
-        <AcmeLogo />
+    <main className='min-h-screen'>
+      <div className='w-full flex justify-between p-5 absolute'>
+        <div className=''><AcmeLogo /></div>
+        <ModeToggle />
       </div>
-      <div className="mt-4 flex grow flex-col gap-4 md:flex-row">
-        <div className="flex flex-col justify-center gap-6 rounded-lg bg-secondary px-6 py-10 md:w-2/5 md:px-20">
-          <div
-            className="h-0 w-0 border-b-[30px] border-l-[20px] border-r-[20px] border-b-foreground border-l-transparent border-r-transparent"
-          />
-          {/* <div className={styles.shape}/> */}
+      <div
+        // className="grid grid-cols-1 lg:grid-cols-13 h-screen"
+        className="grid grid-cols-1 lg:grid-cols-2 h-screen"
+      >
+        <div
+          // className="col-span-8 flex-col justify-center gap-6 bg-secondary hidden lg:flex p-11"
+          className="col-span-1 flex-col justify-end gap-6 bg-secondary hidden lg:flex p-11"
+        >
+          {/* <HeroImages/> */}
           <p className={`${lusitana.className} text-xl text-secondary-foreground md:text-3xl md:leading-normal`}>
             <strong>Welcome to Acme.</strong> This is the example for the{' '}
             <a href="https://nextjs.org/learn/" className="text-primary">
@@ -25,17 +28,15 @@ export default function Page() {
             </a>
             , brought to you by Vercel.
           </p>
-          <Link
-            href="/login"
-            className="flex items-center gap-5 self-start rounded-lg bg-primary px-6 py-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/80 md:text-base"
-          >
-            <span>Log in</span>
-          </Link>
-          <ModeToggle />
         </div>
-        <div className="flex items-center justify-center p-6 md:w-3/5 md:px-28 md:py-12">
-          {/* Add Hero Images Here */}
-          <HeroImages />
+        <div
+          // className="col-span-5 flex flex-col items-center justify-center"
+          className="col-span-1 flex flex-col items-center justify-center"
+        >
+          <LoginForm />
+          {/* <div className='block lg:hidden'>
+            <HeroImages/>
+          </div> */}
         </div>
       </div>
     </main>

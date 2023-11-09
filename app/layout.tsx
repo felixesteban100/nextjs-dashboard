@@ -13,7 +13,9 @@ export const metadata: Metadata = {
 };
 
 //TODO:
-// add shadcnUI
+// add page transition
+// add all the filters in a sheet
+// fix the static images not showing in the deployment on vercel
 // add google provider for auth use this docs for guidance: https://authjs.dev/reference/core/providers_google
 
 export default function RootLayout({

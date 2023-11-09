@@ -5,15 +5,16 @@ import {
   InvoiceForm,
   InvoicesTable,
   LatestInvoiceRaw,
-  User,
   Revenue,
-  Character as CharacterType,
 } from "./definitions";
 import { formatCurrency } from "./utils";
 import { unstable_noStore as noStore } from "next/cache";
 import dbConnect from "./mongodb/db";
-("./mongodb/db");
 import Character from "@/app/lib/mongodb/characterModel";
+import {
+  sortByType,
+  sortDirectionType,
+} from "../ui/characters/FilterCharacters";
 
 export async function fetchRevenue() {
   // Add noStore() here prevent the response from being cached.
@@ -260,15 +261,19 @@ export async function fetchFilteredCustomers(query: string) {
   }
 }
 
-export async function getUser(email: string) {
+export async function fetchAllCharacters(characterSelectedId: string){
   noStore();
 
   try {
-    const user = await sql`SELECT * from USERS where email=${email}`;
-    return user.rows[0] as User;
+    await dbConnect();
+    const selectedCharacter = await Character.aggregate([
+      { $match: { id: parseInt(characterSelectedId) } },
+    ])
+
+    return selectedCharacter[0]
   } catch (error) {
-    console.error("Failed to fetch user:", error);
-    throw new Error("Failed to fetch user.");
+    console.error(error);
+    throw Error(`MongoDB Connection Error: ${error}`);
   }
 }
 
@@ -282,10 +287,13 @@ export async function fetchCharacters(
   race: string,
   includeNameOrExactName: boolean,
   characterOrFullName: boolean,
-  currentPage: number
+  currentPage: number,
+  sortBy: sortByType,
+  sortDirection: sortDirectionType,
+  // characterSelectedId: string
 ) {
   noStore();
-  const CHARACTERS_PER_PAGE = 8;
+  const CHARACTERS_PER_PAGE = 4;
 
   try {
     await dbConnect();
@@ -304,27 +312,27 @@ export async function fetchCharacters(
     );
     // console.log(queryOptions);
 
-    const allCharacters = await Character.aggregate([
+    const charactersToDisplay = await Character.aggregate([
       { $match: { ...queryOptions } },
+      // { $sort : { sortBy: parseInt(sortDirection)} }
       // { $sample: { size: howMany } }, // shuffle
     ])
+      .sort({ [`${sortBy}`]: sortDirection as any })
       .skip(offset)
-      .limit(4);
+      .limit(CHARACTERS_PER_PAGE);
 
+    const allCharacters = await Character.aggregate([{ $match: { ...queryOptions } }])
 
-    // this isn't giving the meant value
-    const totalPages = Math.floor(
-      (
-        await Character.aggregate([
-          { $match: { ...queryOptions } },
-          // { $sample: { size: howMany } },
-        ])
-      ).length / CHARACTERS_PER_PAGE
-    );
+    const totalPages = Math.ceil(allCharacters.length / CHARACTERS_PER_PAGE);
 
-    
+    // const characterSelected = await Character.aggregate([
+    //   { $match: { 'id': parseInt(characterSelectedId) } },
+    //   // { $sort : { sortBy: parseInt(sortDirection)} }
+    //   // { $sample: { size: howMany } }, // shuffle
+    // ]);
+
     // await new Promise((resolve) => setTimeout(resolve, 7000));
-    
+
     /* console.log("totalPages", totalPages);
     console.log("characters", (
       await Character.aggregate([
@@ -333,9 +341,9 @@ export async function fetchCharacters(
       ])
     ).length); */
 
-    return { allCharacters, totalPages };
+    return { charactersToDisplay, totalPages, allCharacters/* selectedCharacter: allCharacters.filter(c => parseInt(characterSelectedId) === c.id)[0] */ };
   } catch (error) {
-    console.error(`MongoDB Connection Error: ${error}`);
+    console.error(error);
     throw Error(`MongoDB Connection Error: ${error}`);
   }
 }
@@ -378,3 +386,4 @@ function getQueryOptions(
 
   return queryOptions;
 }
+

@@ -43,7 +43,7 @@ export default function PaginationCharacters({ totalPages }: { totalPages: numbe
 
             return (
               <PaginationNumber
-                key={page}
+                key={index}
                 href={createPageURL(page)}
                 page={page}
                 position={position}

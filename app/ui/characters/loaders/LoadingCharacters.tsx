@@ -1,4 +1,4 @@
-import CharactersContainer from "./CharactersContainer"
+import CharactersContainer from "../CharactersContainer"
 import LoadingCharactersCard from "./LoadingCharactersCard"
 
 export default function LoadingCharacters() {
