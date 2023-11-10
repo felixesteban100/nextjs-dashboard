@@ -9,6 +9,7 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 type CharacterProps = {
     currentCharacter: Character;
     indexForTest: number;
+    value: string;
 }
 
 export default function CharacterComponent({ currentCharacter, indexForTest }: CharacterProps) {

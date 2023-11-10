@@ -5,7 +5,6 @@ import Characters from '@/app/ui/characters/Characters';
 // import SearchCharacters from '@/app/ui/characters/searchCharacters';
 import LoadingCharacters from '@/app/ui/characters/loaders/LoadingCharacters';
 import FilterCharacters, { sortByType, sortDirectionType } from '@/app/ui/characters/FilterCharacters';
-import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 import DialogCharacters from '@/app/ui/characters/dialog/DialogCharacters';
 
@@ -21,6 +20,9 @@ export default async function Page({
         page?: string;
         pageCharacters?: string;
         characterName?: string;
+        side?: string;
+        universe?: string;
+
         sortBy?: sortByType;
         sortDirection?: sortDirectionType;
         characterSelectedId?: string;
@@ -28,6 +30,9 @@ export default async function Page({
     }
 }) {
     const characterName = searchParams?.characterName || '';
+    const side = searchParams?.side || "All"
+    const universe = searchParams?.universe || "All"
+    
     const currentPage = Number(searchParams?.pageCharacters) || 1;
     const sortBy = searchParams?.sortBy || 'id';
     const sortDirection = searchParams?.sortDirection || 'asc';
@@ -56,7 +61,7 @@ export default async function Page({
                             and remove your data from our servers.
                         </SheetDescription>
                         <FilterCharacters />
-                        <SheetFooter>Filter Characters</SheetFooter>
+                        {/* <SheetFooter>Filter Characters</SheetFooter> */}
                     </SheetHeader>
                 </SheetContent>
             </Sheet>
@@ -69,6 +74,9 @@ export default async function Page({
                     <Suspense key={characterName + currentPage + sortBy + sortDirection + characterSelectedId} fallback={<LoadingCharacters />}>
                         <Characters
                             characterName={characterName}
+                            side={side}
+                            universe={universe}
+
                             currentPage={currentPage}
                             sortBy={sortBy}
                             sortDirection={sortDirection}
@@ -78,7 +86,6 @@ export default async function Page({
                     </Suspense>
                 </DialogCharacters>
             </div>
-
         </div>
     );
 }

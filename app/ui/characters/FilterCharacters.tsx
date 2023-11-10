@@ -15,15 +15,21 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { ALLUNIVERSE } from "@/app/lib/constants"
+import { ScrollArea } from "@/components/ui/scroll-area"
 
-const sortByValues = ["name", "id", "_id", "powerstats.power", "powerstats.intelligence", "powerstats.strength", "powerstats.durability"]
+const sortByValues = ["name", "id", "_id", "powerstats.power", "powerstats.intelligence", "powerstats.strength", "powerstats.durability", "powerstats.combat", "powerstats.speed"]
+const sideValues = ["All", "good", "bad", "neutral"]
 
 const formSchema = z.object({
     name: z.string(),
+    side: z.string(),
+    universe: z.string(),
+
     // sortBy: z.enum(sortByValues),
     sortBy: z.string(),
     // sortDirection: z.enum(['asc', 'desc'])
-    sortDirection: z.string()
+    sortDirection: z.string(),
 })
 
 export type sortByType = z.infer<typeof formSchema.shape.sortBy>
@@ -38,6 +44,9 @@ export default function FilterCharacters() {
         resolver: zodResolver(formSchema),
         defaultValues: {
             name: searchParams.get('characterName') ?? "",
+            side: searchParams.get('side') ?? "All",
+            universe: searchParams.get('universe') ?? "All",
+
             sortBy: searchParams.get('sortBy') ?? "id",
             sortDirection: searchParams.get('sortDirection') ?? "asc"
         },
@@ -53,6 +62,18 @@ export default function FilterCharacters() {
             params.delete('characterName')
         }
 
+        if (values.side !== "") {
+            params.set('side', values.side)
+        } else {
+            params.delete('side')
+        }
+
+        if (values.universe !== "") {
+            params.set('universe', values.universe)
+        } else {
+            params.delete('universe')
+        }
+
         params.set('sortBy', values.sortBy)
         params.set('sortDirection', values.sortDirection)
 
@@ -62,80 +83,140 @@ export default function FilterCharacters() {
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-                <FormField
-                    control={form.control}
-                    name="name"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Name</FormLabel>
-                            <FormControl>
-                                <Input placeholder="Batman, Iron Man, Spider-Man..." {...field} />
-                            </FormControl>
-                            <FormDescription>
-                                Example: Batman, Iron Man, Spider-Man...
-                            </FormDescription>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-                <FormField
-                    control={form.control}
-                    name="sortBy"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Sort By</FormLabel>
-                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <ScrollArea className="h-[620px] w-full p-5">
+                    <FormField
+                        control={form.control}
+                        name="name"
+                        render={({ field }) => (
+                            <FormItem className="w-[95%] mx-auto">
+                                <FormLabel>Name</FormLabel>
                                 <FormControl>
-                                    <SelectTrigger>
-                                        <SelectValue placeholder="Select a way to sort" />
-                                    </SelectTrigger>
+                                    <Input placeholder="Batman, Iron Man, Spider-Man..." {...field} />
                                 </FormControl>
-                                <SelectContent>
-                                    {sortByValues.map((c) => (
-                                        <SelectItem key={c} value={c}>{c}</SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
-                            <FormDescription>
-                                Example: name, id, _id...
-                            </FormDescription>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-                <FormField
-                    control={form.control}
-                    name="sortDirection"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Sort By</FormLabel>
-                            <RadioGroup
-                                onValueChange={field.onChange}
-                                defaultValue={field.value}
-                                className="flex flex-col space-y-1"
-                            >
-                                <FormItem className="flex items-center space-x-3 space-y-0">
+                                <FormDescription>
+                                    Example: Batman, Iron Man, Spider-Man...
+                                </FormDescription>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name="sortBy"
+                        render={({ field }) => (
+                            <FormItem className="w-[95%] mx-auto mt-5">
+                                <FormLabel>Sort By</FormLabel>
+                                <Select onValueChange={field.onChange} defaultValue={field.value}>
                                     <FormControl>
-                                        <RadioGroupItem value="asc" />
+                                        <SelectTrigger>
+                                            <SelectValue placeholder="Select a way to sort" />
+                                        </SelectTrigger>
                                     </FormControl>
-                                    <FormLabel className="font-normal">Ascending</FormLabel>
-                                </FormItem>
-                                <FormItem className="flex items-center space-x-3 space-y-0">
+                                    <SelectContent>
+                                        {sortByValues.map((c) => (
+                                            <SelectItem key={c} value={c}>{c}</SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                                <FormDescription>
+                                    Example: name, id, _id...
+                                </FormDescription>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name="sortDirection"
+                        render={({ field }) => (
+                            <FormItem className="w-[95%] mx-auto mt-5">
+                                <FormLabel>Sort Direction</FormLabel>
+                                <RadioGroup
+                                    onValueChange={field.onChange}
+                                    defaultValue={field.value}
+                                    className="flex flex-row space-y-1"
+                                >
+                                    <FormItem className="flex items-center space-x-3 space-y-0">
+                                        <FormControl>
+                                            <RadioGroupItem value="asc" />
+                                        </FormControl>
+                                        <FormLabel className="font-normal">Ascending</FormLabel>
+                                    </FormItem>
+                                    <FormItem className="flex items-center space-x-3 space-y-0">
+                                        <FormControl>
+                                            <RadioGroupItem value="desc" />
+                                        </FormControl>
+                                        <FormLabel className="font-normal">Descending</FormLabel>
+                                    </FormItem>
+                                </RadioGroup>
+                                <FormDescription>
+                                    Example: name, id, _id...
+                                </FormDescription>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+
+                    <FormField
+                        control={form.control}
+                        name="side"
+                        render={({ field }) => (
+                            <FormItem className="w-[95%] mx-auto mt-5">
+                                <FormLabel>Side</FormLabel>
+                                <Select onValueChange={field.onChange} defaultValue={field.value}>
                                     <FormControl>
-                                        <RadioGroupItem value="desc" />
+                                        <SelectTrigger>
+                                            <SelectValue placeholder="Select a side" />
+                                        </SelectTrigger>
                                     </FormControl>
-                                    <FormLabel className="font-normal">Descending</FormLabel>
-                                </FormItem>
-                            </RadioGroup>
-                            <FormDescription>
-                                Example: name, id, _id...
-                            </FormDescription>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-                <Button type="submit">Filter</Button>
+                                    <SelectContent>
+                                        {sideValues.map((c) => (
+                                            <SelectItem key={c} value={c}>{c}</SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                                <FormDescription>
+                                    Example: good, bad, neutral
+                                </FormDescription>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+
+                    <FormField
+                        control={form.control}
+                        name="universe"
+                        render={({ field }) => (
+                            <FormItem className="w-[95%] mx-auto mt-5">
+                                <FormLabel>Universe</FormLabel>
+                                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                    <FormControl>
+                                        <SelectTrigger>
+                                            <SelectValue placeholder="Select a universe" />
+                                        </SelectTrigger>
+                                    </FormControl>
+                                    <SelectContent>
+                                        <ScrollArea className="h-[200px]">
+                                            {ALLUNIVERSE.map((c) => (
+                                                <SelectItem key={c.value} value={c.value}>{c.name}</SelectItem>
+                                            ))}
+                                        </ScrollArea>
+                                    </SelectContent>
+                                </Select>
+                                <FormDescription>
+                                    Example: Marvel, DC, Shueisha...
+                                </FormDescription>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+
+                </ScrollArea>
+                <div className="w-full flex justify-end">
+                    <Button type="submit">Filter</Button>
+                </div>
             </form>
         </Form>
+
     )
 }

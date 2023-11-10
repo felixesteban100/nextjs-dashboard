@@ -2,12 +2,17 @@ import { Character } from "@/app/lib/definitions"
 import FeatureTabContainer from "./FeatureTabContainer"
 import StatContainer from "../stats/StatContainer"
 import Image from "next/image"
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 
 type FeatureTabComicsProps = {
     selectedCharacter: Character
 }
 
 function FeatureTabComics({ selectedCharacter }: FeatureTabComicsProps) {
+    const allImages: string[] = [
+        selectedCharacter.images.md,
+        ...Object.entries(selectedCharacter.images).filter(([key, value]) => key !== "md" && value !== "-" && value !== "" && !value.includes('/api/images/xs/')).map(c => c[1])
+    ]
 
     const images = Object.entries(organizedComicsProperty(selectedCharacter.comics, selectedCharacter.biography.publisher).slice().sort(() => Math.random() - 0.5)).filter(([key, value]) => key !== "md" && value !== "-" && value !== "" && !value.includes('/api/images/xs/')).map(c => c[1])
 
@@ -17,6 +22,31 @@ function FeatureTabComics({ selectedCharacter }: FeatureTabComicsProps) {
             extraClassNames="h-[50vh] md:h-[70vh] border-2 overflow-scroll"
         >
             <StatContainer>
+                <ScrollArea className="w-96 whitespace-nowrap rounded-md border mx-auto">
+                    <div className="flex w-max space-x-4 p-4">
+                        {allImages.map((img, index) => (
+                            <figure key={index} className="shrink-0">
+                                <div className="overflow-hidden rounded-md">
+                                    <Image
+                                        src={img}
+                                        alt={`Photo by ${index}`}
+                                        className="aspect-[3/4] h-full w-fit object-cover"
+                                        width={300}
+                                        height={400}
+                                    />
+                                </div>
+                                <figcaption className="pt-2 text-xs text-muted-foreground">
+                                    Photo by{" "}
+                                    <span className="font-semibold text-foreground">
+                                        {selectedCharacter.name}
+                                    </span>
+                                </figcaption>
+                            </figure>
+                        ))}
+                    </div>
+                    <ScrollBar orientation="horizontal" />
+                </ScrollArea>
+
                 <div className='md:w-[50%] flex justify-center mx-auto'>
                     <div className="h-full w-full flex flex-col justify-center items-center gap-5">
                         {images.map((comic, index) => {

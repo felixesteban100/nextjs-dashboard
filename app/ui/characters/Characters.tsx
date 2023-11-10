@@ -12,6 +12,9 @@ import DialogContentCharacter from './dialog/DialogContentCharacter';
 
 type CharactersProps = {
     characterName: string,
+    side: string,
+    universe: string
+
     currentPage: number,
     sortBy: sortByType
     sortDirection: sortDirectionType,
@@ -19,8 +22,8 @@ type CharactersProps = {
     characterSelectedId: string
 }
 
-export default async function Characters({ characterName, currentPage, sortBy, sortDirection, isDialogOpen, characterSelectedId }: CharactersProps) {
-    const { charactersToDisplay, totalPages }: { charactersToDisplay: Character[], totalPages: number, allCharacters: Character[] } = await fetchCharacters(characterName, 714, "All", "All", "All", "Both", "All", true, false, currentPage, sortBy, sortDirection)
+export default async function Characters({ characterName, side, universe, currentPage, sortBy, sortDirection, isDialogOpen, characterSelectedId }: CharactersProps) {
+    const { charactersToDisplay, totalPages }: { charactersToDisplay: Character[], totalPages: number } = await fetchCharacters(characterName, 714, side, universe, "All", "Both", "All", true, false, currentPage, sortBy, sortDirection)
 
     return (
         <div className='flex flex-col gap-5 justify-between'>
@@ -29,8 +32,9 @@ export default async function Characters({ characterName, currentPage, sortBy, s
                     {
                         charactersToDisplay/* .sort(() => 0.5 - Math.random()) */.map((currentCharacter, index) => {
                             return (
-                                <DialogTrigger asChild className='grid h-fit' key={currentCharacter._id}>
+                                <DialogTrigger className='grid h-fit' key={currentCharacter._id}>
                                     <CharacterComponent
+                                        value={JSON.stringify(currentCharacter)}
                                         key={currentCharacter._id}
                                         indexForTest={index}
                                         currentCharacter={{ ...currentCharacter, _id: currentCharacter._id.toString() }}

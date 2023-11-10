@@ -261,16 +261,16 @@ export async function fetchFilteredCustomers(query: string) {
   }
 }
 
-export async function fetchAllCharacters(characterSelectedId: string){
+export async function fetchAllCharacters(characterSelectedId: string) {
   noStore();
 
   try {
     await dbConnect();
     const selectedCharacter = await Character.aggregate([
       { $match: { id: parseInt(characterSelectedId) } },
-    ])
+    ]);
 
-    return selectedCharacter[0]
+    return selectedCharacter[0];
   } catch (error) {
     console.error(error);
     throw Error(`MongoDB Connection Error: ${error}`);
@@ -280,7 +280,7 @@ export async function fetchAllCharacters(characterSelectedId: string){
 export async function fetchCharacters(
   characterName: string,
   howMany: number,
-  side: "All" | "good" | "bad" | "neutral",
+  side: string/* "All" | "good" | "bad" | "neutral" */,
   universe: string,
   team: string,
   gender: "Both" | "Male" | "Female",
@@ -289,7 +289,7 @@ export async function fetchCharacters(
   characterOrFullName: boolean,
   currentPage: number,
   sortBy: sortByType,
-  sortDirection: sortDirectionType,
+  sortDirection: sortDirectionType
   // characterSelectedId: string
 ) {
   noStore();
@@ -300,48 +300,26 @@ export async function fetchCharacters(
 
     const offset = (currentPage - 1) * CHARACTERS_PER_PAGE;
 
-    const queryOptions = getQueryOptions(
-      characterName,
-      side,
-      universe,
-      team,
-      gender,
-      race,
-      includeNameOrExactName,
-      characterOrFullName
-    );
-    // console.log(queryOptions);
+    const queryOptions = getQueryOptions( characterName, side, universe, team, gender, race, includeNameOrExactName, characterOrFullName );
 
     const charactersToDisplay = await Character.aggregate([
       { $match: { ...queryOptions } },
       // { $sort : { sortBy: parseInt(sortDirection)} }
       // { $sample: { size: howMany } }, // shuffle
     ])
-      .sort({ [`${sortBy}`]: sortDirection as any })
+      .sort({ [`${sortBy}`]: sortDirection as any }) //as string | Record<string, 1 | -1 | Meta> | Record<string, SortOrder>
       .skip(offset)
-      .limit(CHARACTERS_PER_PAGE);
+      // .limit(CHARACTERS_PER_PAGE)
 
-    const allCharacters = await Character.aggregate([{ $match: { ...queryOptions } }])
+    const allCharacters = await Character.aggregate([
+      { $match: { ...queryOptions } },
+    ])
+      .limit(howMany)
+      .sort({ [`${sortBy}`]: sortDirection as any });
 
     const totalPages = Math.ceil(allCharacters.length / CHARACTERS_PER_PAGE);
 
-    // const characterSelected = await Character.aggregate([
-    //   { $match: { 'id': parseInt(characterSelectedId) } },
-    //   // { $sort : { sortBy: parseInt(sortDirection)} }
-    //   // { $sample: { size: howMany } }, // shuffle
-    // ]);
-
-    // await new Promise((resolve) => setTimeout(resolve, 7000));
-
-    /* console.log("totalPages", totalPages);
-    console.log("characters", (
-      await Character.aggregate([
-        { $match: { ...queryOptions } },
-        { $sample: { size: howMany } },
-      ])
-    ).length); */
-
-    return { charactersToDisplay, totalPages, allCharacters/* selectedCharacter: allCharacters.filter(c => parseInt(characterSelectedId) === c.id)[0] */ };
+    return { charactersToDisplay: charactersToDisplay.filter((c, i) => i < 4), totalPages };
   } catch (error) {
     console.error(error);
     throw Error(`MongoDB Connection Error: ${error}`);
@@ -350,10 +328,10 @@ export async function fetchCharacters(
 
 function getQueryOptions(
   characterName: string,
-  side: "All" | "good" | "bad" | "neutral",
+  side: string/* "All" | "good" | "bad" | "neutral" */,
   universe: string,
   team: string,
-  gender: "Both" | "Male" | "Female",
+  gender: string/* "Both" | "Male" | "Female" */,
   race: string,
   includeNameOrExactName: boolean,
   characterOrFullName: boolean
@@ -377,7 +355,7 @@ function getQueryOptions(
   }
   if (side !== "All") queryOptions["biography.alignment"] = side;
   if (universe !== "All") {
-    queryOptions.universe = universe;
+    queryOptions["biography.publisher"] = universe;
     if (team !== "All")
       queryOptions["connections.groupAffiliation"] = new RegExp(team, "ig");
   }
@@ -386,4 +364,3 @@ function getQueryOptions(
 
   return queryOptions;
 }
-
