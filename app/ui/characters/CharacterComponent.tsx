@@ -11,7 +11,7 @@ export default function CharacterComponent({ currentCharacter }: CharacterProps)
     return (
         <Link
             className={`cursor-pointer group/item`}
-            href={`/dashboard/character?id=${currentCharacter.id}`}
+            href={`/dashboard/characters/${currentCharacter.id}`}
         >
             <div
                 className={

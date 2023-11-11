@@ -1,6 +1,7 @@
 import { Suspense } from 'react';
 import { Metadata } from 'next';
 import CharacterInfo from '@/app/ui/characters/CharacterInfo';
+import LoadingCharacterInfo from '@/app/ui/characters/loaders/LoadingCharacterInfo';
 // import Link from 'next/link';
 // import { Button } from '@/components/ui/button';
 // import { ArrowBigLeft, ArrowBigRight } from 'lucide-react'
@@ -9,14 +10,8 @@ export const metadata: Metadata = {
     title: 'Character',
 };
 
-export default async function Page({
-    searchParams,
-}: {
-    searchParams?: {
-        id?: string
-    }
-}) {
-    const characterId = searchParams?.id || '70'
+export default async function Page({ params }: { params: { id: string } }) {
+    const characterId = params.id || '70'
 
     return (
         <div className='flex flex-col gap-5 justify-between md:mt-10'>
@@ -39,7 +34,7 @@ export default async function Page({
             </div>
 
             <div className="w-[90vw] md:w-[80vw] max-w-[1500px] max-h-[90vh]">
-                <Suspense fallback={<>Loading...</>}>
+                <Suspense fallback={<LoadingCharacterInfo />}>
                     <CharacterInfo characterId={characterId} />
                 </Suspense>
             </div>

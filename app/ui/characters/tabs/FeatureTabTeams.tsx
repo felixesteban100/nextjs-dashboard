@@ -2,6 +2,7 @@ import { Character } from "@/app/lib/definitions"
 import FeatureTabContainer from "./FeatureTabContainer"
 import StatContainer from "../stats/StatContainer"
 import { getTeamByUniverse } from "@/app/lib/constants"
+import Link from "next/link"
 
 type FeatureTabTeamsProps = {
     selectedCharacter: Character
@@ -22,14 +23,15 @@ function FeatureTabTeams({ selectedCharacter }: FeatureTabTeamsProps) {
                                 {
                                     getTeamsImagesByCharacter(selectedCharacter).map((teamFound) => {
                                         return (
-                                            <div
+                                            <Link
+                                                href={`/dashboard/characters?universe=${selectedCharacter.biography.publisher}&team=${teamFound.value}`}    
                                                 key={teamFound.name}
                                                 className="tooltip mt-5 mx-auto flex gap-1 flex-col cursor-pointer group/items"
                                                 data-tip={teamFound.name}
                                             >
                                                 <img className="hover:pointer-events-none active:pointer-events-none" src={teamFound?.img} alt={teamFound?.name} />
                                                 <p className="font-semibold text-primary text-xl group-hover/items:underline">{teamFound?.name}</p>
-                                            </div>
+                                            </Link>
                                         )
                                     })
                                 }

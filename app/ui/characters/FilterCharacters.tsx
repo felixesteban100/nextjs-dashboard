@@ -17,9 +17,11 @@ import {
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { ALLUNIVERSE, getTeamByUniverse } from "@/app/lib/constants"
 import { ScrollArea } from "@/components/ui/scroll-area"
+import { Slider } from "@/components/ui/slider"
 
 const formSchema = z.object({
     name: z.string(),
+    howMany: z.string(),
     side: z.string(),
     universe: z.string(),
     team: z.string(),
@@ -42,6 +44,7 @@ export default function FilterCharacters() {
         resolver: zodResolver(formSchema),
         defaultValues: {
             name: searchParams.get('characterName') ?? "",
+            howMany: searchParams.get('howMany') ?? "25",
             side: searchParams.get('side') ?? "All",
             universe: searchParams.get('universe') ?? "All",
             team: searchParams.get('team') || 'All',
@@ -63,6 +66,12 @@ export default function FilterCharacters() {
             params.set('characterName', values.name)
         } else {
             params.delete('characterName')
+        }
+
+        if (values.howMany !== "") {
+            params.set('howMany', values.howMany)
+        } else {
+            params.delete('howMany')
         }
 
         if (values.side !== "") {
@@ -88,8 +97,6 @@ export default function FilterCharacters() {
         replace(`${pathname}?${params.toString()}`)
     }
 
-    console.log(teamByUniverse)
-
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -105,6 +112,22 @@ export default function FilterCharacters() {
                                 </FormControl>
                                 <FormDescription>
                                     Example: Batman, Iron Man, Spider-Man...
+                                </FormDescription>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name="howMany"
+                        render={({ field }) => (
+                            <FormItem className="w-[95%] mx-auto mt-5">
+                                <FormLabel>How Many</FormLabel>
+                                <FormControl>
+                                    <Slider onValueChange={(value) => field.onChange(value[0].toString())} defaultValue={[parseInt(field.value)]} max={100} min={1} step={1} />
+                                </FormControl>
+                                <FormDescription>
+                                    {field.value}
                                 </FormDescription>
                                 <FormMessage />
                             </FormItem>

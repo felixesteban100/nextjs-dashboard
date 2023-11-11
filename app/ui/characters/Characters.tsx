@@ -1,6 +1,6 @@
 import CharactersContainer from '@/app/ui/characters/CharactersContainer';
 import CharacterComponent from '@/app/ui/characters/CharacterComponent';
-import { fetchAllCharacters, fetchCharacters } from '@/app/lib/data';
+import { fetchCharacters } from '@/app/lib/data';
 import PaginationCharacters from './paginationCharacters';
 import { Character } from '@/app/lib/definitions';
 import { sortByType, sortDirectionType } from './FilterCharacters';
@@ -9,6 +9,7 @@ import { getTeamByUniverse } from '@/app/lib/constants';
 
 type CharactersProps = {
     characterName: string,
+    howMany: string
     side: string,
     universe: string,
     team: string,
@@ -18,8 +19,8 @@ type CharactersProps = {
     sortDirection: sortDirectionType,
 }
 
-export default async function Characters({ characterName, side, universe, team, currentPage, sortBy, sortDirection }: CharactersProps) {
-    const { charactersToDisplay, totalPages }: { charactersToDisplay: Character[], totalPages: number } = await fetchCharacters(characterName, 25, side, universe, team, "both", "All", true, false, currentPage, sortBy, sortDirection)
+export default async function Characters({ characterName, howMany, side, universe, team, currentPage, sortBy, sortDirection }: CharactersProps) {
+    const { charactersToDisplay, totalPages }: { charactersToDisplay: Character[], totalPages: number } = await fetchCharacters(characterName, parseInt(howMany), side, universe, team, "both", "All", true, false, currentPage, sortBy, sortDirection)
     // const charactersToDisplay: Character[] = await fetchAllCharacters('80')
     // console.log(charactersToDisplay.map((c) => c.name))
     

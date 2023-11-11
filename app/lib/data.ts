@@ -261,7 +261,7 @@ export async function fetchFilteredCustomers(query: string) {
   }
 }
 
-export async function fetchAllCharacters(characterSelectedId: string) {
+export async function fetchCharacterById(characterSelectedId: string) {
   noStore();
 
   try {
@@ -270,13 +270,15 @@ export async function fetchAllCharacters(characterSelectedId: string) {
       { $match: { id: parseInt(characterSelectedId) } },
     ]);
 
+    // await new Promise((resolve) => setTimeout(resolve, 5000));
+
     // const selectedCharacter = await Character.find({});
 
     return selectedCharacter[0];
     // return selectedCharacter[0];
   } catch (error) {
     console.error(error);
-    throw Error(`MongoDB Connection Error: ${error}`);
+    // throw Error(`MongoDB Connection Error: ${error}`);
   }
 }
 
@@ -299,7 +301,6 @@ export async function fetchCharacters(
 
   try {
     await dbConnect();
-
     const offset = (currentPage - 1) * CHARACTERS_PER_PAGE;
 
     const queryOptions = getQueryOptions(characterName, side, universe, team, gender, race, includeNameOrExactName, characterOrFullName);

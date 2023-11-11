@@ -13,6 +13,7 @@ export const metadata: Metadata = {
 };
 
 //TODO:
+// howMany is not working correctly
 // the mongodb queries are slow : /
 // make so that when you filter the universe the field for filtering teams resets
 // add page transition

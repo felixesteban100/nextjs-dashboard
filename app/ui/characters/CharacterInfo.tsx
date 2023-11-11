@@ -1,10 +1,13 @@
 import Image from "next/image";
 import { Character } from "@/app/lib/definitions";
-import { fetchAllCharacters } from "@/app/lib/data";
+import { fetchCharacterById } from "@/app/lib/data";
 import CharacterFeatures from "./tabs/CharacterFeatures";
+import { notFound } from 'next/navigation';
 
 export default async function CharacterInfo({ characterId }: { characterId: string }) {
-    const selectedCharacter: Character = await fetchAllCharacters(characterId)
+    const selectedCharacter: Character = await fetchCharacterById(characterId)
+    
+    if(!selectedCharacter) notFound()
 
     return (
         <>
