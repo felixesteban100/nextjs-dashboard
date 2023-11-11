@@ -13,8 +13,10 @@ export const metadata: Metadata = {
 };
 
 //TODO:
+// the mongodb queries are slow : /
+// make so that when you filter the universe the field for filtering teams resets
 // add page transition
-// add all the filters in a sheet
+// add all the filters in the sheet (filterCharacters.tsx)
 // fix the static images not showing in the deployment on vercel
 // add google provider for auth use this docs for guidance: https://authjs.dev/reference/core/providers_google
 

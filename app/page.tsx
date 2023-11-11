@@ -3,7 +3,6 @@ import { lusitana } from '@/app/ui/fonts'
 import { ModeToggle } from '@/components/mode-toogle';
 // import styles from '@/app/ui/home.module.css'
 import LoginForm from './ui/login-form';
-import HeroImages from './ui/hero-images';
 
 export default function Page() {
   return (

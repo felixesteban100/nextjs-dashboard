@@ -270,7 +270,10 @@ export async function fetchAllCharacters(characterSelectedId: string) {
       { $match: { id: parseInt(characterSelectedId) } },
     ]);
 
+    // const selectedCharacter = await Character.find({});
+
     return selectedCharacter[0];
+    // return selectedCharacter[0];
   } catch (error) {
     console.error(error);
     throw Error(`MongoDB Connection Error: ${error}`);
@@ -283,14 +286,13 @@ export async function fetchCharacters(
   side: string/* "All" | "good" | "bad" | "neutral" */,
   universe: string,
   team: string,
-  gender: "Both" | "Male" | "Female",
+  gender: "both" | "male" | "female",
   race: string,
   includeNameOrExactName: boolean,
   characterOrFullName: boolean,
   currentPage: number,
   sortBy: sortByType,
   sortDirection: sortDirectionType
-  // characterSelectedId: string
 ) {
   noStore();
   const CHARACTERS_PER_PAGE = 4;
@@ -300,22 +302,22 @@ export async function fetchCharacters(
 
     const offset = (currentPage - 1) * CHARACTERS_PER_PAGE;
 
-    const queryOptions = getQueryOptions( characterName, side, universe, team, gender, race, includeNameOrExactName, characterOrFullName );
+    const queryOptions = getQueryOptions(characterName, side, universe, team, gender, race, includeNameOrExactName, characterOrFullName);
 
     const charactersToDisplay = await Character.aggregate([
       { $match: { ...queryOptions } },
       // { $sort : { sortBy: parseInt(sortDirection)} }
       // { $sample: { size: howMany } }, // shuffle
     ])
-      .sort({ [`${sortBy}`]: sortDirection as any }) //as string | Record<string, 1 | -1 | Meta> | Record<string, SortOrder>
-      .skip(offset)
-      // .limit(CHARACTERS_PER_PAGE)
+    .sort({ [`${sortBy}`]: sortDirection as any }) //as string | Record<string, 1 | -1 | Meta> | Record<string, SortOrder>
+    .skip(offset)
+    .limit(CHARACTERS_PER_PAGE)
 
     const allCharacters = await Character.aggregate([
       { $match: { ...queryOptions } },
     ])
-      .limit(howMany)
-      .sort({ [`${sortBy}`]: sortDirection as any });
+    .limit(howMany)
+    .sort({ [`${sortBy}`]: sortDirection as any });
 
     const totalPages = Math.ceil(allCharacters.length / CHARACTERS_PER_PAGE);
 
@@ -359,7 +361,7 @@ function getQueryOptions(
     if (team !== "All")
       queryOptions["connections.groupAffiliation"] = new RegExp(team, "ig");
   }
-  if (gender !== "Both") queryOptions["appearance.gender"] = gender;
+  if (gender !== "both") queryOptions["appearance.gender"] = gender;
   if (race !== "All") queryOptions["appearance.race"] = race;
 
   return queryOptions;

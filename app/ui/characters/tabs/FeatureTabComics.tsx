@@ -22,15 +22,15 @@ function FeatureTabComics({ selectedCharacter }: FeatureTabComicsProps) {
             extraClassNames="h-[50vh] md:h-[70vh] border-2 overflow-scroll"
         >
             <StatContainer>
-                <ScrollArea className="w-96 whitespace-nowrap rounded-md border mx-auto">
-                    <div className="flex w-max space-x-4 p-4">
+                <ScrollArea className="w-56 md:w-96 whitespace-nowrap rounded-md border mx-auto mb-5">
+                    <div className="flex w-max space-x-4 p-4 md:h-[450px]">
                         {allImages.map((img, index) => (
-                            <figure key={index} className="shrink-0">
-                                <div className="overflow-hidden rounded-md">
+                            <figure key={index} className="shrink-0 w-[150px] md:w-max">
+                                <div className="overflow-hidden rounded-md h-[90%] w-full">
                                     <Image
                                         src={img}
-                                        alt={`Photo by ${index}`}
-                                        className="aspect-[3/4] h-full w-fit object-cover"
+                                        alt={`Photo by ${selectedCharacter.name}-${index}`}
+                                        // className="aspect-[3/4] h-full w-fit object-cover"
                                         width={300}
                                         height={400}
                                     />
@@ -82,7 +82,7 @@ export function organizedComicsProperty(
                     "https://upload.wikimedia.org/wikipedia/en/1/19/Marvel_Universe_%28Civil_War%29.jpg",
                     "https://cdn.marvel.com/u/prod/marvel/i/mg/f/70/5d5aaf2e85d4d/clean.jpg",
                     "https://i5.walmartimages.com/asr/4bb4cfc9-ce7f-4d44-821d-dff6eae1f38b.fbf723c17381a38682b8660aaed481d9.jpeg",
-                    "https://images.saymedia-content.com/.image/t_share/MTc0MzA1MTk3OTc4Mjk4MjM2/getting-into-comics-a-general-guide.jpg",
+                    // "https://images.saymedia-content.com/.image/t_share/MTc0MzA1MTk3OTc4Mjk4MjM2/getting-into-comics-a-general-guide.jpg",
                     "https://cdn.marvel.com/u/prod/marvel/i/mg/f/90/64ecae4a89ba7/clean.jpg",
                     "https://2.bp.blogspot.com/VgE-mzd8ctoEG3S--deLN57u5tZ4tT2fCIixOS8qiGoK83Nyi9TQpF_tQIM6K7ohGRF0TpQREeQ-=s0?rhlupa=MjcuNjcuMTQyLjI0Nw&rnvuka=TW96aWxsYS81LjAgKExpbnV4OyBBbmRyb2lkIDUuMC4yOyBBU1VTX1owMExEIEJ1aWxkL0xSWDIyRykgQXBwbGVXZWJLaXQvNTM3LjM2IChLSFRNTCwgbGlrZSBHZWNrbykgQ2hyb21lLzYwLjAuMzExMi4xMTYgTW9iaWxlIFNhZmFyaS81MzcuMzY=",
                     "https://cdn.marvel.com/u/prod/marvel/i/mg/6/b0/5863dd6a70a67/clean.jpg",

@@ -1,45 +1,41 @@
 import CharactersContainer from '@/app/ui/characters/CharactersContainer';
 import CharacterComponent from '@/app/ui/characters/CharacterComponent';
-import { fetchCharacters } from '@/app/lib/data';
+import { fetchAllCharacters, fetchCharacters } from '@/app/lib/data';
 import PaginationCharacters from './paginationCharacters';
 import { Character } from '@/app/lib/definitions';
 import { sortByType, sortDirectionType } from './FilterCharacters';
-import { DialogTrigger } from '@/components/ui/dialog';
-import { Suspense } from "react";
-
-import { DialogContent } from "@/components/ui/dialog";
-import DialogContentCharacter from './dialog/DialogContentCharacter';
+import Image from 'next/image';
+import { getTeamByUniverse } from '@/app/lib/constants';
 
 type CharactersProps = {
     characterName: string,
     side: string,
-    universe: string
+    universe: string,
+    team: string,
 
     currentPage: number,
     sortBy: sortByType
     sortDirection: sortDirectionType,
-    isDialogOpen: boolean,
-    characterSelectedId: string
 }
 
-export default async function Characters({ characterName, side, universe, currentPage, sortBy, sortDirection, isDialogOpen, characterSelectedId }: CharactersProps) {
-    const { charactersToDisplay, totalPages }: { charactersToDisplay: Character[], totalPages: number } = await fetchCharacters(characterName, 714, side, universe, "All", "Both", "All", true, false, currentPage, sortBy, sortDirection)
+export default async function Characters({ characterName, side, universe, team, currentPage, sortBy, sortDirection }: CharactersProps) {
+    const { charactersToDisplay, totalPages }: { charactersToDisplay: Character[], totalPages: number } = await fetchCharacters(characterName, 25, side, universe, team, "both", "All", true, false, currentPage, sortBy, sortDirection)
+    // const charactersToDisplay: Character[] = await fetchAllCharacters('80')
+    // console.log(charactersToDisplay.map((c) => c.name))
+    
+    const teamInfo = getTeamByUniverse(universe).filter((c) => c.name === team)[0]
 
     return (
-        <div className='flex flex-col gap-5 justify-between'>
+        <div className='flex flex-col gap-5 justify-between items-center'>
             <CharactersContainer>
                 <>
                     {
                         charactersToDisplay/* .sort(() => 0.5 - Math.random()) */.map((currentCharacter, index) => {
                             return (
-                                <DialogTrigger className='grid h-fit' key={currentCharacter._id}>
-                                    <CharacterComponent
-                                        value={JSON.stringify(currentCharacter)}
-                                        key={currentCharacter._id}
-                                        indexForTest={index}
-                                        currentCharacter={{ ...currentCharacter, _id: currentCharacter._id.toString() }}
-                                    />
-                                </DialogTrigger>
+                                <CharacterComponent
+                                    key={currentCharacter._id}
+                                    currentCharacter={{ ...currentCharacter, _id: currentCharacter._id.toString() }}
+                                />
                             )
                         })
                     }
@@ -50,13 +46,21 @@ export default async function Characters({ characterName, side, universe, curren
                 <PaginationCharacters totalPages={totalPages} />
             </div>
 
-            <DialogContent
-                className="w-[80vw] max-w-[1500px] max-h-[90vh] overflow-y-scroll xl:overflow-hidden"
-            >
-                <Suspense fallback={<>Loading...</>}>
-                    <DialogContentCharacter characterSelectedId={characterSelectedId} />
-                </Suspense>
-            </DialogContent>
+            {
+                teamInfo?.img !== undefined ?
+                    <div className='w-full hidden lg:flex flex-col justify-center items-center gap-5'>
+                        <Image
+                            src={teamInfo.img}
+                            width={500}
+                            height={500}
+                            className='w-[30%]'
+                            alt={teamInfo.value}
+                        />
+                        <p className=''>{teamInfo.name}</p>
+                    </div>
+                    :
+                    null
+            }
         </div>
     )
 }

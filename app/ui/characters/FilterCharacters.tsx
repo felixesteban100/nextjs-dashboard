@@ -15,16 +15,14 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import { ALLUNIVERSE } from "@/app/lib/constants"
+import { ALLUNIVERSE, getTeamByUniverse } from "@/app/lib/constants"
 import { ScrollArea } from "@/components/ui/scroll-area"
-
-const sortByValues = ["name", "id", "_id", "powerstats.power", "powerstats.intelligence", "powerstats.strength", "powerstats.durability", "powerstats.combat", "powerstats.speed"]
-const sideValues = ["All", "good", "bad", "neutral"]
 
 const formSchema = z.object({
     name: z.string(),
     side: z.string(),
     universe: z.string(),
+    team: z.string(),
 
     // sortBy: z.enum(sortByValues),
     sortBy: z.string(),
@@ -46,11 +44,16 @@ export default function FilterCharacters() {
             name: searchParams.get('characterName') ?? "",
             side: searchParams.get('side') ?? "All",
             universe: searchParams.get('universe') ?? "All",
+            team: searchParams.get('team') || 'All',
 
             sortBy: searchParams.get('sortBy') ?? "id",
             sortDirection: searchParams.get('sortDirection') ?? "asc"
         },
     })
+
+    const sortByValues = ["name", "id", "_id", "powerstats.power", "powerstats.intelligence", "powerstats.strength", "powerstats.durability", "powerstats.combat", "powerstats.speed"]
+    const sideValues = ["All", "good", "bad", "neutral"]
+    const teamByUniverse: { name: string, value: string }[] = getTeamByUniverse(form.watch().universe)
 
     function onSubmit(values: z.infer<typeof formSchema>) {
         const params = new URLSearchParams(searchParams)
@@ -70,8 +73,13 @@ export default function FilterCharacters() {
 
         if (values.universe !== "") {
             params.set('universe', values.universe)
+            params.delete('team')
+            if (values.team !== "") {
+                params.set('team', values.team)
+            }
         } else {
             params.delete('universe')
+            params.delete('team')
         }
 
         params.set('sortBy', values.sortBy)
@@ -80,10 +88,12 @@ export default function FilterCharacters() {
         replace(`${pathname}?${params.toString()}`)
     }
 
+    console.log(teamByUniverse)
+
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-                <ScrollArea className="h-[620px] w-full p-5">
+                <ScrollArea className="h-[730px] w-full p-5">
                     <FormField
                         control={form.control}
                         name="name"
@@ -210,6 +220,39 @@ export default function FilterCharacters() {
                             </FormItem>
                         )}
                     />
+
+                    {
+                        teamByUniverse.length > 0 ?
+                            <FormField
+                                control={form.control}
+                                name="team"
+                                render={({ field }) => (
+                                    <FormItem className="w-[95%] mx-auto mt-5">
+                                        <FormLabel>Team</FormLabel>
+                                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                            <FormControl>
+                                                <SelectTrigger>
+                                                    <SelectValue placeholder="Select a team" />
+                                                </SelectTrigger>
+                                            </FormControl>
+                                            <SelectContent>
+                                                <ScrollArea className="h-[200px]">
+                                                    <SelectItem value="All">All teams</SelectItem>
+                                                    {teamByUniverse.map((c) => (
+                                                        <SelectItem key={c.value} value={c.value}>{c.name}</SelectItem>
+                                                    ))}
+                                                </ScrollArea>
+                                            </SelectContent>
+                                        </Select>
+                                        <FormDescription>
+                                            Example: Avengers, Justice League...
+                                        </FormDescription>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            : null
+                    }
 
                 </ScrollArea>
                 <div className="w-full flex justify-end">

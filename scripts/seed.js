@@ -1,13 +1,14 @@
 const { db } = require('@vercel/postgres');
 const {
-  invoices,
-  customers,
-  revenue,
-  users,
+  // invoices,
+  // customers,
+  // revenue,
+  // users,
+  characters
 } = require('../app/lib/placeholder-data.js');
 const bcrypt = require('bcrypt');
 
-async function seedUsers(client) {
+/* async function seedUsers(client) {
   try {
     await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
     // Create the "invoices" table if it doesn't exist
@@ -177,3 +178,42 @@ main().catch((err) => {
     err,
   );
 });
+ */
+
+async function seedCharacters(client) {
+  try {
+    await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
+    // Create the "invoices" table if it doesn't exist
+    const createTable = await client.sql`
+      CREATE TABLE IF NOT EXISTS characters (
+        id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+        name VARCHAR(255) NOT NULL,
+        email TEXT NOT NULL UNIQUE,
+        password TEXT NOT NULL
+      );
+    `;
+
+    console.log(`Created "characters" table`);
+
+    // Insert data into the "users" table
+    const insertedCharacters = await Promise.all(
+      characters.map(async (character) => {
+        return client.sql`
+        INSERT INTO characters (id, name, email, password)
+        VALUES (${character.id.}, ${character.name}, ${user.email}, ${hashedPassword})
+        ON CONFLICT (id) DO NOTHING;
+      `;
+      }),
+    );
+
+    console.log(`Seeded ${insertedCharacters.length} users`);
+
+    return {
+      createTable,
+      characters: insertedCharacters,
+    };
+  } catch (error) {
+    console.error('Error seeding users:', error);
+    throw error;
+  }
+}

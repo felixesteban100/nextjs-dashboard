@@ -1,35 +1,17 @@
-'use client';
-
 import { publisherIMG } from '@/app/lib/charactersUtils';
 import { Character } from '@/app/lib/definitions';
 import Image from 'next/image';
-// import Link from 'next/link';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import Link from 'next/link';
 
 type CharacterProps = {
     currentCharacter: Character;
-    indexForTest: number;
-    value: string;
 }
 
-export default function CharacterComponent({ currentCharacter, indexForTest }: CharacterProps) {
-    const { replace } = useRouter()
-    const pathname = usePathname()
-    const searchParams = useSearchParams()
-    const params = new URLSearchParams(searchParams)
-
-    function changeCharacterSelected(character: Character) {
-        params.set('characterSelectedId', character.id.toString())
-        // console.log(`${pathname}?${params.toString()}`)
-        replace(`${pathname}?${params.toString()}`)
-        // return `${pathname}?${params.toString()}`
-    }
-
+export default function CharacterComponent({ currentCharacter }: CharacterProps) {
     return (
-        <div
+        <Link
             className={`cursor-pointer group/item`}
-            onClick={() => changeCharacterSelected(currentCharacter)}
-            // href={changeCharacterSelected(currentCharacter)}
+            href={`/dashboard/character?id=${currentCharacter.id}`}
         >
             <div
                 className={
@@ -71,6 +53,6 @@ export default function CharacterComponent({ currentCharacter, indexForTest }: C
                     />
                 </div>
             </div>
-        </div>
+        </Link>
     );
 }

@@ -15,10 +15,10 @@ export default function StatAccordion({ icon, title, content/* , dataTest */ }: 
     return (
         
             <AccordionItem value={title}>
-                <AccordionTrigger>
-                    <div className="flex justify-between md:flex-row gap-2 items-center">
+                <AccordionTrigger className="group/statAccor">
+                    <div className="flex justify-between md:flex-row gap-2 items-center ">
                         <p className="text-2xl md:text-3xl">{icon}</p>
-                        <p className="font-normal hidden md:block">{title}</p>
+                        <p className="font-normal hidden md:block group-hover/statAccor:font-bold">{title}</p>
                     </div>
                 </AccordionTrigger>
                 <AccordionContent>

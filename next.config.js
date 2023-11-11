@@ -16,7 +16,11 @@ const nextConfig = {
         // domains: ['cdn.jsdelivr.net', 'upload.wikimedia.org'], //make it 'your-domain.com'
         remotePatterns: [
           {
-            // protocol: "https",
+            protocol: "https",
+            hostname: "**",
+          },
+          {
+            protocol: "http",
             hostname: "**",
           },
         ],
