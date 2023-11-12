@@ -29,7 +29,8 @@ export default async function Page({
     }
 }) {
     const characterName = searchParams?.characterName || '';
-    const howMany = searchParams?.howMany || '25'
+    // const howMany = searchParams?.howMany || '25'
+    const howMany = searchParams?.howMany || '714'
     const side = searchParams?.side || "All"
     const universe = searchParams?.universe || "All"
     const team = searchParams?.team || "All"
