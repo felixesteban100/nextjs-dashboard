@@ -137,3 +137,16 @@ export type Character = {
   slug: string;
   comics?: string[];
 }
+
+export type QueryOptions = {
+  name?: RegExp | string;
+  "biography.fullName"?: RegExp | string;
+  "biography.alignment"?: string;
+  "biography.publisher"?: string;
+  "connections.groupAffiliation"?: RegExp;
+  "appearance.gender"?: string;
+  "appearance.race"?: string;
+};
+/* {
+    [key: string]: any;
+  } */

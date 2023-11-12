@@ -58,7 +58,7 @@ function FeatureTabBiography({ selectedCharacter }: FeatureTabBiographyProps) {
                             title="Aliases"
                             content={selectedCharacter.biography.aliases.map(((currentAlias, index) => {
                                 return (
-                                    <p key={`${currentAlias}-${index}`} >{currentAlias}</p>
+                                    <p key={`${currentAlias}-${index}`}>{currentAlias}</p>
                                 )
                             }))}
                         />

@@ -9,7 +9,15 @@ export const metadata: Metadata = {
   title: 'Customers',
 };
 
-export default async function Page() {
+export default async function Page({
+  searchParams,
+}: {
+  searchParams?: {
+      query?: string;
+  }
+}) {
+  const query = searchParams?.query ?? ""
+
   return (
     <main>
       <h1 className={`${lusitana.className} mb-8 text-xl md:text-2xl`}>
@@ -17,7 +25,7 @@ export default async function Page() {
       </h1>
       <Search placeholder="Search customers..." />
       <Suspense fallback={<CustomersTableSkeleton/>}>
-        <Table /* customers={customers} */ />
+        <Table query={query} />
       </Suspense>
       {/* <div className="mt-5 flex w-full justify-center">
         <Pagination totalPages={totalPages} />

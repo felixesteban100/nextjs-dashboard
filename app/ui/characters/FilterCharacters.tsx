@@ -15,7 +15,7 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import { ALLUNIVERSE, getTeamByUniverse } from "@/app/lib/constants"
+import { ALLUNIVERSE, CHARACTERS_PER_PAGE, getTeamByUniverse } from "@/app/lib/constants"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Slider } from "@/components/ui/slider"
 
@@ -44,7 +44,7 @@ export default function FilterCharacters() {
         resolver: zodResolver(formSchema),
         defaultValues: {
             name: searchParams.get('characterName') ?? "",
-            howMany: searchParams.get('howMany') ?? "25",
+            howMany: searchParams.get('howMany') ?? "16",
             side: searchParams.get('side') ?? "All",
             universe: searchParams.get('universe') ?? "All",
             team: searchParams.get('team') || 'All',
@@ -124,7 +124,7 @@ export default function FilterCharacters() {
                             <FormItem className="w-[95%] mx-auto mt-5">
                                 <FormLabel>How Many</FormLabel>
                                 <FormControl>
-                                    <Slider onValueChange={(value) => field.onChange(value[0].toString())} defaultValue={[parseInt(field.value)]} max={714} min={4} step={4} />
+                                    <Slider onValueChange={(value) => field.onChange(value[0].toString())} defaultValue={[parseInt(field.value)]} max={714} min={CHARACTERS_PER_PAGE} step={CHARACTERS_PER_PAGE} />
                                 </FormControl>
                                 <FormDescription>
                                     {field.value}

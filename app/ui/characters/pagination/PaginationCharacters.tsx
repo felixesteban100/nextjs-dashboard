@@ -17,14 +17,12 @@ export default function PaginationCharacters({ totalPages }: { totalPages: numbe
   function createPageURL(pageNumber: number | string): string{
     const params = new URLSearchParams(searchParams)
     params.set('pageCharacters', pageNumber.toString())
-    // console.log(`${pathname}?${params.toString()}`)
     return `${pathname}?${params.toString()}`
   }
 
   return (
     <>
       {/* NOTE: comment in this code when you get to this point in the course */}
-
       <div className="inline-flex">
         <PaginationArrow
           direction="left"

@@ -1,33 +1,23 @@
 import CharactersContainer from '@/app/ui/characters/CharactersContainer';
 import CharacterComponent from '@/app/ui/characters/CharacterComponent';
 import { fetchCharacters } from '@/app/lib/data';
-import PaginationCharacters from './paginationCharacters';
-import { Character } from '@/app/lib/definitions';
+import { Character, QueryOptions } from '@/app/lib/definitions';
 import { sortByType, sortDirectionType } from './FilterCharacters';
-import Image from 'next/image';
-import { getTeamByUniverse } from '@/app/lib/constants';
 
 type CharactersProps = {
-    characterName: string,
-    howMany: string
-    side: string,
-    universe: string,
-    team: string,
-
+    queryOptions: QueryOptions
     currentPage: number,
     sortBy: sortByType
     sortDirection: sortDirectionType,
+
+    // charactersToDisplay: Character[]
 }
 
-export default async function Characters({ characterName, howMany, side, universe, team, currentPage, sortBy, sortDirection }: CharactersProps) {
-    const { charactersToDisplay, totalPages }: { charactersToDisplay: Character[], totalPages: number } = await fetchCharacters(characterName, parseInt(howMany), side, universe, team, "both", "All", true, false, currentPage, sortBy, sortDirection)
-    // const charactersToDisplay: Character[] = await fetchAllCharacters('80')
-    // console.log(charactersToDisplay.map((c) => c.name))
+export default async function Characters({ /* charactersToDisplay */queryOptions, currentPage, sortBy, sortDirection }: CharactersProps) {
+    // const charactersToDisplay: Character[] = await fetchCharacters(characterName, parseInt(howMany), side, universe, team, "both", "All", true, false, currentPage, sortBy, sortDirection)
+    const charactersToDisplay: Character[] = await fetchCharacters(queryOptions, currentPage, sortBy, sortDirection)
     
-    const teamInfo = getTeamByUniverse(universe).filter((c) => c.name === team)[0]
-
     return (
-        <div className='flex flex-col gap-5 justify-between items-center'>
             <CharactersContainer>
                 <>
                     {
@@ -42,27 +32,6 @@ export default async function Characters({ characterName, howMany, side, univers
                     }
                 </>
             </CharactersContainer>
-
-            <div className="mt-5 flex w-full justify-center">
-                <PaginationCharacters totalPages={totalPages} />
-            </div>
-
-            {
-                teamInfo?.img !== undefined ?
-                    <div className='w-full hidden lg:flex flex-col justify-center items-center gap-5'>
-                        <Image
-                            src={teamInfo.img}
-                            width={500}
-                            height={500}
-                            className='w-[30%]'
-                            alt={teamInfo.value}
-                        />
-                        <p className=''>{teamInfo.name}</p>
-                    </div>
-                    :
-                    null
-            }
-        </div>
     )
 }
 

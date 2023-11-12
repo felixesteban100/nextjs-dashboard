@@ -1,3 +1,5 @@
+export const CHARACTERS_PER_PAGE = 4;
+
 export const ALLUNIVERSE = [
   { value: "All", name: "All universes" },
   { value: "Marvel Comics", name: "Marvel" },

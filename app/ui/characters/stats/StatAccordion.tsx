@@ -13,7 +13,6 @@ type StatCollapseProps = {
 
 export default function StatAccordion({ icon, title, content/* , dataTest */ }: StatCollapseProps) {
     return (
-        
             <AccordionItem value={title}>
                 <AccordionTrigger className="group/statAccor">
                     <div className="flex justify-between md:flex-row gap-2 items-center ">
@@ -22,7 +21,7 @@ export default function StatAccordion({ icon, title, content/* , dataTest */ }: 
                     </div>
                 </AccordionTrigger>
                 <AccordionContent>
-                    <div className="flex justify-center font-bold">
+                    <div className="flex gap-5 justify-center font-bold flex-wrap">
                         {content}
                     </div>
                 </AccordionContent>

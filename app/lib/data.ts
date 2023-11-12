@@ -5,6 +5,7 @@ import {
   InvoiceForm,
   InvoicesTable,
   LatestInvoiceRaw,
+  QueryOptions,
   Revenue,
 } from "./definitions";
 import { formatCurrency } from "./utils";
@@ -15,6 +16,7 @@ import {
   sortByType,
   sortDirectionType,
 } from "../ui/characters/FilterCharacters";
+import { CHARACTERS_PER_PAGE } from "./constants";
 
 export async function fetchRevenue() {
   // Add noStore() here prevent the response from being cached.
@@ -167,6 +169,8 @@ export async function fetchInvoicesPages(query: string) {
       invoices.status ILIKE ${`%${query}%`}
   `;
 
+    // await new Promise((resolve) => setTimeout(resolve, 7000));
+
     const totalPages = Math.ceil(Number(count.rows[0].count) / ITEMS_PER_PAGE);
     return totalPages;
   } catch (error) {
@@ -269,69 +273,60 @@ export async function fetchCharacterById(characterSelectedId: string) {
     const selectedCharacter = await Character.aggregate([
       { $match: { id: parseInt(characterSelectedId) } },
     ]);
-
     // await new Promise((resolve) => setTimeout(resolve, 5000));
 
-    // const selectedCharacter = await Character.find({});
-
     return selectedCharacter[0];
-    // return selectedCharacter[0];
   } catch (error) {
     console.error(error);
-    // throw Error(`MongoDB Connection Error: ${error}`);
   }
 }
 
+
 export async function fetchCharacters(
-  characterName: string,
-  howMany: number,
-  side: string/* "All" | "good" | "bad" | "neutral" */,
-  universe: string,
-  team: string,
-  gender: "both" | "male" | "female",
-  race: string,
-  includeNameOrExactName: boolean,
-  characterOrFullName: boolean,
+  queryOptions: QueryOptions,
   currentPage: number,
   sortBy: sortByType,
   sortDirection: sortDirectionType
 ) {
   noStore();
-  const CHARACTERS_PER_PAGE = 4;
 
   try {
     await dbConnect();
     const offset = (currentPage - 1) * CHARACTERS_PER_PAGE;
-
-    const queryOptions = getQueryOptions(characterName, side, universe, team, gender, race, includeNameOrExactName, characterOrFullName);
 
     const charactersToDisplay = await Character.aggregate([
       { $match: { ...queryOptions } },
       // { $sort : { sortBy: parseInt(sortDirection)} }
       // { $sample: { size: howMany } }, // shuffle
     ])
-    .sort({ [`${sortBy}`]: sortDirection as any }) //as string | Record<string, 1 | -1 | Meta> | Record<string, SortOrder>
-    .skip(offset)
-    // .limit(CHARACTERS_PER_PAGE)
+      .sort({ [`${sortBy}`]: sortDirection as any }) //as string | Record<string, 1 | -1 | Meta> | Record<string, SortOrder>
+      .skip(offset)
+      .then(data => data.filter((c, i) => i < CHARACTERS_PER_PAGE))
 
-    const allCharacters = await Character.aggregate([
-      { $match: { ...queryOptions } },
-    ])
-    .limit(howMany)
-    .sort({ [`${sortBy}`]: sortDirection as any });
+    // await new Promise((resolve) => setTimeout(resolve, 7000));
 
-    const totalPages = Math.ceil(allCharacters.length / CHARACTERS_PER_PAGE);
-    // const totalPages = Math.ceil(charactersToDisplay.length - 1 / CHARACTERS_PER_PAGE);
-
-    // return { charactersToDisplay: charactersToDisplay.slice(offset).filter((c, i) => i < 4), totalPages };
-    return { charactersToDisplay: charactersToDisplay.filter((c, i) => i < 4), totalPages };
+    return charactersToDisplay
   } catch (error) {
     console.error(error);
     throw Error(`MongoDB Connection Error: ${error}`);
   }
 }
 
-function getQueryOptions(
+export async function fetchPages(
+  queryOptions: QueryOptions,
+  howMany: number,
+) {
+  const allCharacters = await Character.aggregate([
+    { $match: { ...queryOptions } },
+  ])
+    .limit(howMany)
+  // await new Promise((resolve) => setTimeout(resolve, 7000));
+
+  const totalPages = Math.ceil(allCharacters.length / CHARACTERS_PER_PAGE);
+  return totalPages
+}
+
+export function getQueryOptions(
   characterName: string,
   side: string/* "All" | "good" | "bad" | "neutral" */,
   universe: string,
@@ -341,26 +336,26 @@ function getQueryOptions(
   includeNameOrExactName: boolean,
   characterOrFullName: boolean
 ) {
-  const queryOptions: {
-    [key: string]: any;
-  } = {};
+  const queryOptions: QueryOptions = {};
 
-  /* 
-  {
-    "$regex": "superman|ultraman",
-    "$options": "i"
-  } use this in the name property so that it is possible to search several names rather than just one */
+  // if (characterName !== "") {
+  //   if (characterOrFullName === false) {
+  //     queryOptions.name =
+  //       includeNameOrExactName === true
+  //         ? new RegExp(characterName, "ig")
+  //         : characterName;
+  //   } else {
+  //     queryOptions["biography.fullName"] =
+  //       includeNameOrExactName === true
+  //         ? new RegExp(characterName, "ig")
+  //         : characterName;
+  //   }
+  // }
   if (characterName !== "") {
     if (characterOrFullName === false) {
-      queryOptions.name =
-        includeNameOrExactName === true
-          ? new RegExp(characterName, "ig")
-          : characterName;
+      queryOptions.name = new RegExp(characterName, "ig")
     } else {
-      queryOptions["biography.fullName"] =
-        includeNameOrExactName === true
-          ? new RegExp(characterName, "ig")
-          : characterName;
+      queryOptions["biography.fullName"] = new RegExp(characterName, "ig")
     }
   }
   if (side !== "All") queryOptions["biography.alignment"] = side;
