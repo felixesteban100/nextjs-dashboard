@@ -61,7 +61,6 @@ export default async function Page({
                 <div className='flex flex-col gap-5 justify-between'>
                     <Suspense
                         key={characterName + side + universe + team + currentPage + sortBy + sortDirection}
-                        // key={currentPage}
                         fallback={<LoadingCharacters />}
                     >
                         <Characters

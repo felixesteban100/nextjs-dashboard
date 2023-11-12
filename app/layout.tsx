@@ -13,12 +13,11 @@ export const metadata: Metadata = {
 };
 
 //TODO:
-// howMany is not working correctly
 // the mongodb queries are slow : /
 // make so that when you filter the universe the field for filtering teams resets
 // add page transition
 // add all the filters in the sheet (filterCharacters.tsx)
-// fix the static images not showing in the deployment on vercel
+// fix the static images not showing in the deployment on vercel // now they are showing I don't know how : - |
 // add google provider for auth use this docs for guidance: https://authjs.dev/reference/core/providers_google
 
 export default function RootLayout({

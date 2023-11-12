@@ -312,7 +312,7 @@ export async function fetchCharacters(
     ])
     .sort({ [`${sortBy}`]: sortDirection as any }) //as string | Record<string, 1 | -1 | Meta> | Record<string, SortOrder>
     .skip(offset)
-    .limit(CHARACTERS_PER_PAGE)
+    // .limit(CHARACTERS_PER_PAGE)
 
     const allCharacters = await Character.aggregate([
       { $match: { ...queryOptions } },
@@ -343,6 +343,11 @@ function getQueryOptions(
     [key: string]: any;
   } = {};
 
+  /* 
+  {
+    "$regex": "superman|ultraman",
+    "$options": "i"
+  } use this in the name property so that it is possible to search several names rather than just one */
   if (characterName !== "") {
     if (characterOrFullName === false) {
       queryOptions.name =

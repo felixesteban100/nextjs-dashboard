@@ -3,6 +3,7 @@ import { lusitana } from '@/app/ui/fonts'
 import { ModeToggle } from '@/components/mode-toogle';
 // import styles from '@/app/ui/home.module.css'
 import LoginForm from './ui/login-form';
+// import GoogleSignInButton from './ui/GoogleSignInButton';
 
 export default function Page() {
   return (
@@ -33,6 +34,7 @@ export default function Page() {
           className="col-span-1 flex flex-col items-center justify-center"
         >
           <LoginForm />
+          {/* <GoogleSignInButton /> */}
           {/* <div className='block lg:hidden'>
             <HeroImages/>
           </div> */}

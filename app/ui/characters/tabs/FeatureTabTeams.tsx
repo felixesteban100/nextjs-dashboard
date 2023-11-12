@@ -24,7 +24,7 @@ function FeatureTabTeams({ selectedCharacter }: FeatureTabTeamsProps) {
                                     getTeamsImagesByCharacter(selectedCharacter).map((teamFound) => {
                                         return (
                                             <Link
-                                                href={`/dashboard/characters?universe=${selectedCharacter.biography.publisher}&team=${teamFound.value}`}    
+                                                href={`/dashboard/characters?universe=${selectedCharacter.biography.publisher}&team=${teamFound.value}&howMany=700`}    
                                                 key={teamFound.name}
                                                 className="tooltip mt-5 mx-auto flex gap-1 flex-col cursor-pointer group/items"
                                                 data-tip={teamFound.name}

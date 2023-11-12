@@ -100,7 +100,7 @@ export default function FilterCharacters() {
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-                <ScrollArea className="h-[730px] w-full p-5">
+                <ScrollArea className="h-[700px] w-full p-5">
                     <FormField
                         control={form.control}
                         name="name"
@@ -108,10 +108,10 @@ export default function FilterCharacters() {
                             <FormItem className="w-[95%] mx-auto">
                                 <FormLabel>Name</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="Batman, Iron Man, Spider-Man..." {...field} />
+                                    <Input placeholder="Batman|Iron Man|Spider-Man" {...field} />
                                 </FormControl>
                                 <FormDescription>
-                                    Example: Batman, Iron Man, Spider-Man...
+                                    Example: Batman|Iron Man|Spider-Man
                                 </FormDescription>
                                 <FormMessage />
                             </FormItem>
@@ -124,7 +124,7 @@ export default function FilterCharacters() {
                             <FormItem className="w-[95%] mx-auto mt-5">
                                 <FormLabel>How Many</FormLabel>
                                 <FormControl>
-                                    <Slider onValueChange={(value) => field.onChange(value[0].toString())} defaultValue={[parseInt(field.value)]} max={100} min={1} step={1} />
+                                    <Slider onValueChange={(value) => field.onChange(value[0].toString())} defaultValue={[parseInt(field.value)]} max={714} min={4} step={4} />
                                 </FormControl>
                                 <FormDescription>
                                     {field.value}

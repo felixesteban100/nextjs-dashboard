@@ -22,7 +22,7 @@ function FeatureTabComics({ selectedCharacter }: FeatureTabComicsProps) {
             extraClassNames="h-[50vh] md:h-[70vh] border-2 overflow-scroll"
         >
             <StatContainer>
-                <ScrollArea className="w-56 md:w-96 whitespace-nowrap rounded-md border mx-auto mb-5">
+                <ScrollArea className="w-56 md:w-96 whitespace-nowrap rounded-md  mx-auto mb-5">
                     <div className="flex w-max space-x-4 p-4 md:h-[450px]">
                         {allImages.map((img, index) => (
                             <figure key={index} className="shrink-0 w-[150px] md:w-max">
@@ -30,7 +30,7 @@ function FeatureTabComics({ selectedCharacter }: FeatureTabComicsProps) {
                                     <Image
                                         src={img}
                                         alt={`Photo by ${selectedCharacter.name}-${index}`}
-                                        // className="aspect-[3/4] h-full w-fit object-cover"
+                                        className="aspect-[3/4] h-full w-fit object-cover"
                                         width={300}
                                         height={400}
                                     />

@@ -3,11 +3,17 @@ import { Character } from "@/app/lib/definitions";
 import { fetchCharacterById } from "@/app/lib/data";
 import CharacterFeatures from "./tabs/CharacterFeatures";
 import { notFound } from 'next/navigation';
+// import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 
 export default async function CharacterInfo({ characterId }: { characterId: string }) {
     const selectedCharacter: Character = await fetchCharacterById(characterId)
-    
-    if(!selectedCharacter) notFound()
+
+    if (!selectedCharacter) notFound()
+
+    // const allImages: string[] = [
+    //     selectedCharacter.images.md,
+    //     ...Object.entries(selectedCharacter.images).filter(([key, value]) => key !== "md" && value !== "-" && value !== "" && !value.includes('/api/images/xs/')).map(c => c[1])
+    // ]
 
     return (
         <>
@@ -37,12 +43,35 @@ export default async function CharacterInfo({ characterId }: { characterId: stri
                                 </p>
                             </div>
                         </div>
-
                         <div className="flex flex-col xl:h-[60vh] w-[90%] xl:w-[50%] mx-auto mt-5 xl:mt-0">
                             <CharacterFeatures selectedCharacter={selectedCharacter} />
                         </div>
                     </div>
                 </div>
+                {/* <ScrollArea className="w-56 md:w-96 whitespace-nowrap rounded-md  mx-auto mb-5">
+                    <div className="flex w-max space-x-4 p-4 md:h-[450px]">
+                        {allImages.map((img, index) => (
+                            <figure key={index} className="shrink-0 w-[150px] md:w-max">
+                                <div className="overflow-hidden rounded-md h-[90%] w-full">
+                                    <Image
+                                        src={img}
+                                        alt={`Photo by ${selectedCharacter.name}-${index}`}
+                                        className="aspect-[3/4] h-full w-fit object-cover"
+                                        width={300}
+                                        height={400}
+                                    />
+                                </div>
+                                <figcaption className="pt-2 text-xs text-muted-foreground">
+                                    Photo by{" "}
+                                    <span className="font-semibold text-foreground">
+                                        {selectedCharacter.name}
+                                    </span>
+                                </figcaption>
+                            </figure>
+                        ))}
+                    </div>
+                    <ScrollBar orientation="horizontal" />
+                </ScrollArea> */}
             </div>
         </>
     )
