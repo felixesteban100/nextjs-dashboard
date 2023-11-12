@@ -314,15 +314,16 @@ export async function fetchCharacters(
     .skip(offset)
     // .limit(CHARACTERS_PER_PAGE)
 
-    // const allCharacters = await Character.aggregate([
-    //   { $match: { ...queryOptions } },
-    // ])
-    // .limit(howMany)
-    // .sort({ [`${sortBy}`]: sortDirection as any });
-    // const totalPages = Math.ceil(allCharacters.length / CHARACTERS_PER_PAGE);
-    
-    const totalPages = Math.ceil(howMany - 1 / CHARACTERS_PER_PAGE);
+    const allCharacters = await Character.aggregate([
+      { $match: { ...queryOptions } },
+    ])
+    .limit(howMany)
+    .sort({ [`${sortBy}`]: sortDirection as any });
 
+    const totalPages = Math.ceil(allCharacters.length / CHARACTERS_PER_PAGE);
+    // const totalPages = Math.ceil(charactersToDisplay.length - 1 / CHARACTERS_PER_PAGE);
+
+    // return { charactersToDisplay: charactersToDisplay.slice(offset).filter((c, i) => i < 4), totalPages };
     return { charactersToDisplay: charactersToDisplay.filter((c, i) => i < 4), totalPages };
   } catch (error) {
     console.error(error);
