@@ -9,6 +9,8 @@ import PaginationWrapper from '@/app/ui/characters/pagination/PaginationWrapper'
 import LoadingPaginationCharacters from '@/app/ui/characters/loaders/LoadingPaginationCharacters';
 import { Character, QueryOptions } from '@/app/lib/definitions';
 import { fetchCharacters, fetchPages, getQueryOptions } from '@/app/lib/data';
+import { getTeamByUniverse } from '@/app/lib/constants';
+import Image from 'next/image';
 
 export const metadata: Metadata = {
     title: 'Characters',
@@ -49,7 +51,7 @@ export default async function Page({
 
     // console.log(totalPages)
 
-    // const teamInfo = getTeamByUniverse(universe).filter((c) => c.name === team)[0]
+    const teamInfo = getTeamByUniverse(universe).filter((c) => c.name === team)[0]
     return (
         <div className="w-full">
             <Sheet>
@@ -97,7 +99,7 @@ export default async function Page({
                         <PaginationCharacters totalPages={totalPages} />
                     </div> */}
 
-                    {/* {
+                    {
                         teamInfo?.img !== undefined ?
                             <div className='w-full hidden lg:flex flex-col justify-center items-center gap-5'>
                                 <Image
@@ -111,7 +113,7 @@ export default async function Page({
                             </div>
                             :
                             null
-                    } */}
+                    }
                 </div>
             </div>
         </div>

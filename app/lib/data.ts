@@ -292,6 +292,7 @@ export async function fetchCharacters(
 
   try {
     await dbConnect();
+    
     const offset = (currentPage - 1) * CHARACTERS_PER_PAGE;
 
     const charactersToDisplay = await Character.aggregate([
