@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     title: 'Character',
 };
 
-export default async function Page({ params }: { params: { id: string } }) {
+export default async function Page({ params, searchParams }: { params: { id: string }, searchParams: { image?: string } }) {
     const characterId = params.id || '70'
 
     return (
@@ -48,7 +48,7 @@ export default async function Page({ params }: { params: { id: string } }) {
 
                 <div className="w-[90vw] md:w-[80vw] max-w-[1500px] max-h-[90vh]">
                     <Suspense fallback={<LoadingCharacterInfo />}>
-                        <CharacterInfo characterId={characterId} />
+                        <CharacterInfo characterId={characterId} image={searchParams.image} />
                     </Suspense>
                 </div>
             </div>

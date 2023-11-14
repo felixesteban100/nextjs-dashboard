@@ -5,8 +5,8 @@ import CharacterFeatures from "./tabs/CharacterFeatures";
 import { notFound } from 'next/navigation';
 // import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 
-export default async function CharacterInfo({ characterId }: { characterId: string }) {
-    const selectedCharacter: Character = await fetchCharacterById(characterId)
+export default async function CharacterInfo({ characterId, image }: { characterId: string, image?: string }) {
+    const selectedCharacter: Character | null = await fetchCharacterById(characterId)
 
     if (!selectedCharacter) notFound()
 
@@ -22,11 +22,11 @@ export default async function CharacterInfo({ characterId }: { characterId: stri
                     <div className="flex flex-col xl:flex-row justify-center">
                         <div className='flex flex-col items-center align-middle gap-3 w-[90%] md:w-[50%] lg:w-[30%] xl:h-[60%] mx-auto'>
                             <div
-                                className="relative w-64 md:w-72 lg:w-96 h-[25rem] md:h-[25rem] lg:h-[34rem] bg-muted-foreground shadow-xl rounded-md"
+                                className="relative w-64 md:w-72 lg:w-96 h-[25rem] md:h-[25rem] lg:h-[34rem]  shadow-xl rounded-md"
                             >
                                 <label className='group cursor-pointer w-full h-full' htmlFor={`my-modal-imageZoom`}>
-                                    <Image width={500} height={500} className={`transition-all duration-300 absolute w-full h-full object-cover blur-sm group-focus-visible:animate-pulse group-hover:animate-pulse `} src={selectedCharacter.images.md} alt={selectedCharacter.name} loading="lazy" />
-                                    <Image width={500} height={500} className={`transition-all duration-300 absolute w-[90%] h-[90%] object-cover rounded-md ml-3 md:ml-5 mt-5`} src={selectedCharacter.images.md} alt={selectedCharacter.name} loading="lazy" />
+                                    <Image width={500} height={500} className={`transition-all duration-300 absolute w-full h-full object-cover blur-lg group-focus-visible:animate-pulse group-hover:animate-pulse `} src={image ? selectedCharacter.images[`${image}`] : selectedCharacter.images.md} alt={selectedCharacter.name} loading="lazy" />
+                                    <Image width={500} height={500} className={`transition-all duration-300 absolute w-[90%] h-[90%] object-cover rounded-md ml-3 md:ml-5 mt-5`} src={image ? selectedCharacter.images[`${image}`] : selectedCharacter.images.md} alt={selectedCharacter.name} loading="lazy" />
                                 </label>
                             </div>
 

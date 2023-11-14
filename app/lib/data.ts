@@ -1,22 +1,11 @@
 import { sql } from "@vercel/postgres";
-import {
-  CustomerField,
-  CustomersTable,
-  InvoiceForm,
-  InvoicesTable,
-  LatestInvoiceRaw,
-  QueryOptions,
-  Revenue,
-} from "./definitions";
+import { Character, CustomerField, CustomersTable, InvoiceForm, InvoicesTable, LatestInvoiceRaw, QueryOptions, Revenue } from "./definitions";
 import { formatCurrency } from "./utils";
 import { unstable_noStore as noStore } from "next/cache";
-import dbConnect from "./mongodb/db";
-import Character from "@/app/lib/mongodb/characterModel";
-import {
-  sortByType,
-  sortDirectionType,
-} from "../ui/characters/FilterCharacters";
+import { sortByType, sortDirectionType } from "../ui/characters/FilterCharacters";
 import { CHARACTERS_PER_PAGE } from "./constants";
+import { collectionCharacters } from "./mongodb/mongodb";
+import { EstimatedDocumentCountOptions } from "mongodb";
 
 export async function fetchRevenue() {
   // Add noStore() here prevent the response from being cached.
@@ -267,17 +256,12 @@ export async function fetchFilteredCustomers(query: string) {
 
 export async function fetchCharacterById(characterSelectedId: string) {
   noStore();
-
   try {
-    await dbConnect();
-    const selectedCharacter = await Character.aggregate([
-      { $match: { id: parseInt(characterSelectedId) } },
-    ]);
-    // await new Promise((resolve) => setTimeout(resolve, 5000));
-
-    return selectedCharacter[0];
+    const selectedCharacter = await collectionCharacters.findOne({ id: parseInt(characterSelectedId) })
+    return selectedCharacter
   } catch (error) {
     console.error(error);
+    throw Error(`MongoDB Connection Error: ${error}`);
   }
 }
 
@@ -290,22 +274,15 @@ export async function fetchCharacters(
 ) {
   noStore();
 
+  const offset = (currentPage - 1) * CHARACTERS_PER_PAGE;
   try {
-    await dbConnect();
-    
-    const offset = (currentPage - 1) * CHARACTERS_PER_PAGE;
-
-    const charactersToDisplay = await Character.aggregate([
-      { $match: { ...queryOptions } },
-      // { $sort : { sortBy: parseInt(sortDirection)} }
-      // { $sample: { size: howMany } }, // shuffle
-    ])
-      .sort({ [`${sortBy}`]: sortDirection as any }) //as string | Record<string, 1 | -1 | Meta> | Record<string, SortOrder>
-      .skip(offset)
-      .then(data => data.filter((c, i) => i < CHARACTERS_PER_PAGE))
-
     // await new Promise((resolve) => setTimeout(resolve, 7000));
-
+    const charactersToDisplay: Character[] = await collectionCharacters
+      .find({ ...queryOptions })
+      .skip(offset)
+      .sort({ [`${sortBy}`]: sortDirection as any })
+      .limit(CHARACTERS_PER_PAGE)
+      .toArray()
     return charactersToDisplay
   } catch (error) {
     console.error(error);
@@ -314,16 +291,11 @@ export async function fetchCharacters(
 }
 
 export async function fetchPages(
-  queryOptions: QueryOptions,
-  howMany: number,
+  queryOptions: QueryOptions
 ) {
-  const allCharacters = await Character.aggregate([
-    { $match: { ...queryOptions } },
-  ])
-    .limit(howMany)
-  // await new Promise((resolve) => setTimeout(resolve, 7000));
 
-  const totalPages = Math.ceil(allCharacters.length / CHARACTERS_PER_PAGE);
+  const characterdDisplayLenght = await collectionCharacters.countDocuments(queryOptions)
+  const totalPages = Math.ceil(characterdDisplayLenght / CHARACTERS_PER_PAGE);
   return totalPages
 }
 
@@ -334,24 +306,10 @@ export function getQueryOptions(
   team: string,
   gender: string/* "Both" | "Male" | "Female" */,
   race: string,
-  includeNameOrExactName: boolean,
+  // includeNameOrExactName: boolean,
   characterOrFullName: boolean
 ) {
   const queryOptions: QueryOptions = {};
-
-  // if (characterName !== "") {
-  //   if (characterOrFullName === false) {
-  //     queryOptions.name =
-  //       includeNameOrExactName === true
-  //         ? new RegExp(characterName, "ig")
-  //         : characterName;
-  //   } else {
-  //     queryOptions["biography.fullName"] =
-  //       includeNameOrExactName === true
-  //         ? new RegExp(characterName, "ig")
-  //         : characterName;
-  //   }
-  // }
   if (characterName !== "") {
     if (characterOrFullName === false) {
       queryOptions.name = new RegExp(characterName, "ig")

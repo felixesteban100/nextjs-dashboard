@@ -2,9 +2,9 @@
 
 import { ArrowLeftIcon, ArrowRightIcon } from '@heroicons/react/24/outline';
 import clsx from 'clsx';
-// import Link from 'next/link';
 import { generatePagination } from '@/app/lib/utils';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { usePathname, useSearchParams } from 'next/navigation';
+import Link from 'next/link';
 
 export default function PaginationCharacters({ totalPages }: { totalPages: number }) {
   // NOTE: comment in this code when you get to this point in the course
@@ -13,14 +13,10 @@ export default function PaginationCharacters({ totalPages }: { totalPages: numbe
   const currentPage = Number(searchParams.get('pageCharacters')) || 1
 
   const allPages = generatePagination(currentPage, totalPages);
-
-  const { replace } = useRouter()
-
   function createPageURL(pageNumber: number | string) {
     const params = new URLSearchParams(searchParams)
     params.set('pageCharacters', pageNumber.toString())
-    // return `${pathname}?${params.toString()}`
-    replace(`${pathname}?${params.toString()}`)
+    return `${pathname}?${params.toString()}`
   }
 
   return (
@@ -29,11 +25,9 @@ export default function PaginationCharacters({ totalPages }: { totalPages: numbe
       <div className="inline-flex">
         <PaginationArrow
           direction="left"
-          // href={createPageURL(currentPage - 1)}
-          onClick={() => createPageURL(currentPage - 1)}
+          href={createPageURL(currentPage - 1)}
           isDisabled={currentPage <= 1}
         />
-
         <div className="flex -space-x-px">
           {allPages.map((page, index) => {
             let position: 'first' | 'last' | 'single' | 'middle' | undefined;
@@ -46,8 +40,7 @@ export default function PaginationCharacters({ totalPages }: { totalPages: numbe
             return (
               <PaginationNumber
                 key={index}
-                // href={createPageURL(page)}
-                onClick={() => createPageURL(page)}
+                href={createPageURL(page)}
                 page={page}
                 position={position}
                 isActive={currentPage === page}
@@ -58,8 +51,7 @@ export default function PaginationCharacters({ totalPages }: { totalPages: numbe
 
         <PaginationArrow
           direction="right"
-          // href={createPageURL(currentPage + 1)}
-          onClick={() => createPageURL(currentPage + 1)}
+          href={createPageURL(currentPage + 1)}
           isDisabled={currentPage >= totalPages}
         />
       </div>
@@ -69,14 +61,12 @@ export default function PaginationCharacters({ totalPages }: { totalPages: numbe
 
 function PaginationNumber({
   page,
-  onClick,
-  // href,
+  href,
   isActive,
   position,
 }: {
   page: number | string;
-  // href: string;
-  onClick: () => void;
+  href: string;
   position?: 'first' | 'last' | 'middle' | 'single';
   isActive: boolean;
 }) {
@@ -94,23 +84,19 @@ function PaginationNumber({
   return isActive || position === 'middle' ? (
     <div className={className}>{page}</div>
   ) : (
-    <div onClick={onClick} className={className}>
+    <Link href={href} className={className}>
       {page}
-    </div>
-    /* <Link href={href} className={className}>
-      {page}
-    </Link> */
+    </Link>
+    
   );
 }
 
 function PaginationArrow({
-  // href,
-  onClick,
+  href,
   direction,
   isDisabled,
 }: {
-  // href: string;
-  onClick: () => void
+  href: string;
   direction: 'left' | 'right';
   isDisabled?: boolean;
 }) {
@@ -134,14 +120,8 @@ function PaginationArrow({
   return isDisabled ? (
     <div className={className}>{icon}</div>
   ) : (
-    <div>
-      <div className={className} onClick={onClick}>
-        {icon}
-      </div>
-    </div>
+    <Link className={className} href={href}>
+      {icon}
+    </Link>
   );
 }
-
-/*     <Link className={className} href={href}>
-      {icon}
-    </Link> */

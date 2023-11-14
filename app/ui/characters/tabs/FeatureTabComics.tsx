@@ -3,12 +3,26 @@ import FeatureTabContainer from "./FeatureTabContainer"
 import StatContainer from "../stats/StatContainer"
 import Image from "next/image"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
+import Link from "next/link"
 
 type FeatureTabComicsProps = {
     selectedCharacter: Character
 }
 
 function FeatureTabComics({ selectedCharacter }: FeatureTabComicsProps) {
+    const allImagesInfo: { property: string, img: string }[] = [
+        { property: 'md', img: selectedCharacter.images.md },
+        ...Object.entries(selectedCharacter.images).reduce((acc, currentValue) => {
+            if(currentValue[0] !== "md" && currentValue[1] !== "-" && currentValue[1] !== "" && !currentValue[1].includes('/api/images/xs/')){
+                acc.push({
+                    property: currentValue[0],
+                    value: currentValue[1]
+                })
+            }
+            return acc
+        }, new Array())
+    ]
+
     const allImages: string[] = [
         selectedCharacter.images.md,
         ...Object.entries(selectedCharacter.images).filter(([key, value]) => key !== "md" && value !== "-" && value !== "" && !value.includes('/api/images/xs/')).map(c => c[1])
@@ -24,17 +38,17 @@ function FeatureTabComics({ selectedCharacter }: FeatureTabComicsProps) {
             <StatContainer>
                 <ScrollArea className="w-56 md:w-96 whitespace-nowrap rounded-md  mx-auto mb-5">
                     <div className="flex w-max space-x-4 p-4 md:h-[450px]">
-                        {allImages.map((img, index) => (
+                        {allImagesInfo.map((imgInfo, index) => (
                             <figure key={index} className="shrink-0 w-[150px] md:w-max">
-                                <div className="overflow-hidden rounded-md h-[90%] w-full">
+                                <Link href={`/dashboard/characters/${selectedCharacter.id}?image=${imgInfo.property}`} className="overflow-hidden rounded-md h-[90%] w-full">
                                     <Image
-                                        src={img}
+                                        src={allImages[index]}
                                         alt={`Photo by ${selectedCharacter.name}-${index}`}
                                         className="aspect-[3/4] h-full w-fit object-cover"
                                         width={300}
                                         height={400}
                                     />
-                                </div>
+                                </Link>
                                 <figcaption className="pt-2 text-xs text-muted-foreground">
                                     Photo by{" "}
                                     <span className="font-semibold text-foreground">

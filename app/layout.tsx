@@ -13,6 +13,7 @@ export const metadata: Metadata = {
 };
 
 //TODO:
+// in the [id] page save the tab selected using params
 // modify the database and remove the teams with parentesis in the names
 // the mongodb queries are slow : /
 // make so that when you filter the universe the field for filtering teams resets

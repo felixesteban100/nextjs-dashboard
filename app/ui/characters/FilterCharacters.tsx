@@ -15,13 +15,15 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import { ALLUNIVERSE, CHARACTERS_PER_PAGE, getTeamByUniverse } from "@/app/lib/constants"
+import { ALLUNIVERSE, getTeamByUniverse } from "@/app/lib/constants"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { Slider } from "@/components/ui/slider"
+import { Label } from "@/components/ui/label"
+import { Switch } from "@/components/ui/switch"
 
 const formSchema = z.object({
     name: z.string(),
-    howMany: z.string(),
+    characterOrFullName: z.boolean(),
+    // howMany: z.string(),
     side: z.string(),
     universe: z.string(),
     team: z.string(),
@@ -39,12 +41,14 @@ export default function FilterCharacters() {
     const searchParams = useSearchParams()
     const pathname = usePathname()
     const { replace } = useRouter()
+    const params = new URLSearchParams(searchParams)
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
             name: searchParams.get('characterName') ?? "",
-            howMany: searchParams.get('howMany') ?? "16",
+            characterOrFullName: searchParams.get('characterOrFullName') === "true",
+            // howMany: searchParams.get('howMany') ?? "16",
             side: searchParams.get('side') ?? "All",
             universe: searchParams.get('universe') ?? "All",
             team: searchParams.get('team') || 'All',
@@ -59,7 +63,6 @@ export default function FilterCharacters() {
     const teamByUniverse: { name: string, value: string }[] = getTeamByUniverse(form.watch().universe)
 
     function onSubmit(values: z.infer<typeof formSchema>) {
-        const params = new URLSearchParams(searchParams)
         params.set('pageCharacters', '1');
 
         if (values.name !== "") {
@@ -68,11 +71,13 @@ export default function FilterCharacters() {
             params.delete('characterName')
         }
 
-        if (values.howMany !== "") {
+        params.set('characterOrFullName', values.characterOrFullName.toString())
+
+        /* if (values.howMany !== "") {
             params.set('howMany', values.howMany)
         } else {
             params.delete('howMany')
-        }
+        } */
 
         if (values.side !== "") {
             params.set('side', values.side)
@@ -94,6 +99,8 @@ export default function FilterCharacters() {
         params.set('sortBy', values.sortBy)
         params.set('sortDirection', values.sortDirection)
 
+        // console.log(`${pathname}?${params.toString()}`)
+
         replace(`${pathname}?${params.toString()}`)
     }
 
@@ -106,7 +113,7 @@ export default function FilterCharacters() {
                         name="name"
                         render={({ field }) => (
                             <FormItem className="w-[95%] mx-auto">
-                                <FormLabel>Name</FormLabel>
+                                <FormLabel>{form.getValues().characterOrFullName ? 'Full Name' : "Name"}</FormLabel>
                                 <FormControl>
                                     <Input placeholder="Batman|Iron Man|Spider-Man" {...field} />
                                 </FormControl>
@@ -118,6 +125,28 @@ export default function FilterCharacters() {
                         )}
                     />
                     <FormField
+                        control={form.control}
+                        name="characterOrFullName"
+                        render={({ field }) => (
+                            <FormItem className="w-[95%] mx-auto mt-5">
+                                <FormLabel></FormLabel>
+                                <FormControl>
+                                    <div className="flex items-center space-x-2">
+                                        <Switch
+                                            checked={field.value}
+                                            onCheckedChange={field.onChange}
+                                        />
+                                        <Label htmlFor="airplane-mode">Character {field.value === true ? "fullName" : "name"} (to search)</Label>
+                                    </div>
+                                </FormControl>
+                                {/* <FormDescription>
+                                    Example: Batman|Iron Man|Spider-Man
+                                </FormDescription> */}
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    {/* <FormField
                         control={form.control}
                         name="howMany"
                         render={({ field }) => (
@@ -132,7 +161,7 @@ export default function FilterCharacters() {
                                 <FormMessage />
                             </FormItem>
                         )}
-                    />
+                    /> */}
                     <FormField
                         control={form.control}
                         name="sortBy"
@@ -222,7 +251,13 @@ export default function FilterCharacters() {
                         render={({ field }) => (
                             <FormItem className="w-[95%] mx-auto mt-5">
                                 <FormLabel>Universe</FormLabel>
-                                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                <Select
+                                    onValueChange={(e) => {
+                                        field.onChange(e)
+                                        form.setValue('team', 'All')
+                                    }}
+                                    defaultValue={field.value}
+                                >
                                     <FormControl>
                                         <SelectTrigger>
                                             <SelectValue placeholder="Select a universe" />
@@ -252,7 +287,7 @@ export default function FilterCharacters() {
                                 render={({ field }) => (
                                     <FormItem className="w-[95%] mx-auto mt-5">
                                         <FormLabel>Team</FormLabel>
-                                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                        <Select onValueChange={field.onChange} defaultValue={field.value} value={field.value}>
                                             <FormControl>
                                                 <SelectTrigger>
                                                     <SelectValue placeholder="Select a team" />
