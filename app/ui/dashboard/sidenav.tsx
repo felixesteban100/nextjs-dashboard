@@ -11,7 +11,7 @@ export default function SideNav() {
     <div className="flex h-full flex-col px-3  md:px-2">
       <Link
         className="hidden mb-2 md:flex h-20 items-end justify-start rounded-md bg-primary p-4 md:h-40"
-        href="/"
+        href="/dashboard"
       >
         <div className="w-32 md:w-40">
           <AcmeLogo 

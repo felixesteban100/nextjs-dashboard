@@ -49,12 +49,12 @@ function FeatureTabComics({ selectedCharacter }: FeatureTabComicsProps) {
                                         height={400}
                                     />
                                 </Link>
-                                <figcaption className="pt-2 text-xs text-muted-foreground">
+                                {/* <figcaption className="pt-2 text-xs text-muted-foreground">
                                     Photo by{" "}
                                     <span className="font-semibold text-foreground">
                                         {selectedCharacter.name}
                                     </span>
-                                </figcaption>
+                                </figcaption> */}
                             </figure>
                         ))}
                     </div>

@@ -11,6 +11,8 @@ import Link from "next/link"
 import { usePathname } from 'next/navigation';
 
 import clsx from 'clsx';
+import { linkToCharactersPage } from '@/app/lib/constants';
+
 
 // Map of links to display in the side navigation.
 // Depending on the size of the application, this would be stored in a database.
@@ -22,7 +24,7 @@ const links = [
     icon: DocumentDuplicateIcon,
   },
   { name: 'Customers', href: '/dashboard/customers', icon: UserGroupIcon },
-  { name: 'Characters', href: '/dashboard/characters', icon: UserGroupIcon },
+  { name: 'Characters', href: linkToCharactersPage, icon: UserGroupIcon },
 ];
 
 export default function NavLinks() {

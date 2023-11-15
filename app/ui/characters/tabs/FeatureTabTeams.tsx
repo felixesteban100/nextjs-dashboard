@@ -3,6 +3,7 @@ import FeatureTabContainer from "./FeatureTabContainer"
 import StatContainer from "../stats/StatContainer"
 import { getTeamByUniverse } from "@/app/lib/constants"
 import Link from "next/link"
+import Image from "next/image"
 
 type FeatureTabTeamsProps = {
     selectedCharacter: Character
@@ -19,17 +20,36 @@ function FeatureTabTeams({ selectedCharacter }: FeatureTabTeamsProps) {
                 <StatContainer>
                     {
                         getTeamsImagesByCharacter(selectedCharacter).length > 0 ?
-                            <div className="w-full flex flex-col flex-wrap justify-center items-center gap-5 my-5">
+                            <div
+                                className="w-full flex flex-col flex-wrap justify-center items-center gap-5 my-5"
+                            >
                                 {
                                     getTeamsImagesByCharacter(selectedCharacter).map((teamFound) => {
                                         return (
                                             <Link
-                                                href={`/dashboard/characters?universe=${selectedCharacter.biography.publisher}&team=${teamFound.value}&howMany=700`}    
+                                                href={`/dashboard/characters?universe=${selectedCharacter.biography.publisher}&team=${teamFound.value}&howMany=700`}
                                                 key={teamFound.name}
-                                                className="tooltip mt-5 mx-auto flex gap-1 flex-col cursor-pointer group/items"
+                                                className="mt-5 mx-auto flex gap-1 flex-col cursor-pointer group/items"
                                                 data-tip={teamFound.name}
                                             >
-                                                <img className="hover:pointer-events-none active:pointer-events-none" src={teamFound?.img} alt={teamFound?.name} />
+                                                {teamFound.name.toLowerCase() === "x-men" || teamFound.name.toLowerCase() ===  "supernatural" ?
+                                                    <Image
+                                                        className="rounded-full dark:invert"
+                                                        width={500}
+                                                        height={500}
+                                                        src={teamFound?.img}
+                                                        alt={teamFound?.name}
+                                                    />
+                                                    :
+                                                    <Image
+                                                        // className="hover:pointer-events-none active:pointer-events-none"
+                                                        className=""
+                                                        width={500}
+                                                        height={500}
+                                                        src={teamFound?.img}
+                                                        alt={teamFound?.name}
+                                                    />
+                                                }
                                                 <p className="font-semibold text-primary text-xl group-hover/items:underline">{teamFound?.name}</p>
                                             </Link>
                                         )
@@ -37,7 +57,9 @@ function FeatureTabTeams({ selectedCharacter }: FeatureTabTeamsProps) {
                                 }
                             </div>
                             :
-                            <div className="text-xl font-bold text-center my-5">No teams</div>
+                            <div className="w-full flex flex-col flex-wrap justify-center items-center gap-5 my-5">
+                                <div className="text-xl font-bold text-center my-5">No teams</div>
+                            </div>
                     }
                 </StatContainer>
             </FeatureTabContainer>

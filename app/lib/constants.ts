@@ -207,7 +207,8 @@ export function getTeamByUniverse(universe: string): {name: string, value: strin
           name: "X-Men",
           value: "X-Men",
           // img: 'https://assets.stickpng.com/images/6160517776000b00045a7d7e.png'
-          img: "https://cdn.mos.cms.futurecdn.net/ZmMkFCTgBNMoxEohbzBXJm.jpg",
+          // img: "https://cdn.mos.cms.futurecdn.net/ZmMkFCTgBNMoxEohbzBXJm.jpg",
+          img: "https://seeklogo.com/images/X/x-men-logo-F16A0D1D4D-seeklogo.com.png",
         },
         {
           name: "X-Men (Original)",
@@ -419,9 +420,17 @@ export function getTeamByUniverse(universe: string): {name: string, value: strin
           value: "Ben 10",
           img: "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/b700c630-9435-4853-b567-d025115b827b/degakzn-576504c0-f8f6-40f0-b130-3a19544a0e9e.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcL2I3MDBjNjMwLTk0MzUtNDg1My1iNTY3LWQwMjUxMTViODI3YlwvZGVnYWt6bi01NzY1MDRjMC1mOGY2LTQwZjAtYjEzMC0zYTE5NTQ0YTBlOWUucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.yPaYT4GYrakHIDBEXastMExHC4xVn4_kUFmgvd5J7sA",
         },
+        {
+          name: "Supernatural",
+          value: "Supernatural",
+          img: "https://supernaturalmerch.store/wp-content/uploads/2020/10/Supernatural-Store-logo-1-1.png",
+        },
       ];
 
     default:
       return [];
   }
 }
+
+const arrayOptions = ["name", "id", "_id", "powerstats.power", "powerstats.intelligence", "powerstats.strength", "powerstats.durability", "powerstats.combat", "powerstats.speed"]
+export const linkToCharactersPage = `/dashboard/characters?pageCharacters=${Math.floor(Math.random() * 179) + 1}&characterOrFullName=false&side=All&universe=All&sortBy=${arrayOptions[Math.floor(Math.random() * arrayOptions.length)]}&sortDirection=desc&team=All`

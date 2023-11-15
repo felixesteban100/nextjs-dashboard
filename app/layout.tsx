@@ -15,12 +15,9 @@ export const metadata: Metadata = {
 //TODO:
 // in the [id] page save the tab selected using params
 // modify the database and remove the teams with parentesis in the names
-// the mongodb queries are slow : /
-// make so that when you filter the universe the field for filtering teams resets
 // add page transition
 // add all the filters in the sheet (filterCharacters.tsx)
-// fix the static images not showing in the deployment on vercel // now they are showing I don't know how : - |
-// add google provider for auth use this docs for guidance: https://authjs.dev/reference/core/providers_google
+// add google provider for auth use this docs for guidance: https://authjs.dev/reference/core/providers_google (nextjs 14 doesn't have support for that :-|)
 
 export default function RootLayout({
   children,

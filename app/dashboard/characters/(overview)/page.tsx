@@ -7,6 +7,8 @@ import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTr
 import { QueryOptions } from '@/app/lib/definitions';
 import { getQueryOptions } from '@/app/lib/data';
 import LoadingCharactersContent from '@/app/ui/characters/loaders/LoadingCharactersContent';
+import { getTeamByUniverse } from '@/app/lib/constants';
+import Image from 'next/image';
 
 export const metadata: Metadata = {
     title: 'Characters',
@@ -33,7 +35,7 @@ export default async function Page({
 }) {
     const characterOrFullName = searchParams?.characterOrFullName === "true"
     const characterName = searchParams?.characterName || '';
-    const howMany = searchParams?.howMany || '714'
+    // const howMany = searchParams?.howMany || '714'
     const side = searchParams?.side || "All"
     const universe = searchParams?.universe || "All"
     const team = searchParams?.team || "All"
@@ -43,12 +45,31 @@ export default async function Page({
     const sortDirection = searchParams?.sortDirection || 'desc';
 
     const queryOptions: QueryOptions = getQueryOptions(characterName, side, universe, team, 'both', 'All', characterOrFullName)
+
+    const teamInfo = getTeamByUniverse(universe).filter((c) => c.name === team)[0]
+
     return (
         <div className="w-full">
             <Sheet>
                 <div className="flex w-full items-center justify-between">
                     <SheetTrigger asChild>
-                        <h1 className={`${lusitana.className} text-2xl hover:underline cursor-pointer`}>Characters</h1>
+                        <div className='flex items-center justify-start gap-5'>
+                            <h1 className={`${lusitana.className} text-2xl hover:underline cursor-pointer`}>Characters</h1>
+                            {/* {
+                                teamInfo?.img !== undefined ?
+                                    <div className='mx-auto w-full flex justify-center items-center gap-5'>
+                                        <Image
+                                            src={teamInfo.img}
+                                            width={100}
+                                            height={100}
+                                            className={`hover:absolute hover:w-[30vw] transition-all duration-300 ${teamInfo.name.toLowerCase().includes('x-men') || teamInfo.name.toLowerCase().includes('supernatural') ? "dark:invert" : ""}`}
+                                            alt={teamInfo.value}
+                                        />
+                                    </div>
+                                    :
+                                    null
+                            } */}
+                        </div>
                     </SheetTrigger>
                 </div>
                 <SheetContent>

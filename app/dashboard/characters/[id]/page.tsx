@@ -7,6 +7,7 @@ import LoadingCharacterInfo from '@/app/ui/characters/loaders/LoadingCharacterIn
 // import { Button } from '@/components/ui/button';
 // import { ArrowBigLeft, ArrowBigRight } from 'lucide-react'
 import Breadcrumbs from "@/app/ui/invoices/breadcrumbs";
+import { linkToCharactersPage } from '@/app/lib/constants';
 
 export const metadata: Metadata = {
     title: 'Character',
@@ -19,7 +20,11 @@ export default async function Page({ params, searchParams }: { params: { id: str
         <div>
             <Breadcrumbs
                 breadcrumbs={[
-                    { label: 'Characters', href: '/dashboard/characters' },
+                    { 
+                        label: 'Characters', 
+                        // href: '/dashboard/characters' 
+                        href: linkToCharactersPage 
+                    },
                     {
                         label: `Character-${characterId}`,
                         href: `/dashboard/characters/${characterId}`,
