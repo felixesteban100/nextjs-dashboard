@@ -11,7 +11,7 @@ export function publisherIMG(publisher: string) {
             return "https://www.shueisha.co.jp/wp-content/themes/shueisha/image/en/mv/mv_subtitle_01.png";
 
         case "George Lucas":
-            return "https://media.comicbook.com/wp-content/uploads/2012/06/120411064621_lucasfilm-logo-640x360-16x9.jpg";
+            return "https://www.lucasfilm.com/app/uploads/logo_home2.png";
 
         case "Warner Bros":
             // return "https://variety.com/wp-content/uploads/2022/04/IMG_3724.jpg"
@@ -57,3 +57,43 @@ export function publisherIMG(publisher: string) {
             return "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRykZHBER1nS5QMUGvv0qJCJFuqtf5wPrliiiE_1hMMbCwvONjVOaYloiVHMeCyH710z7g&usqp=CAU";
     }
 }
+
+
+/* CHARACTERS PAGE */
+
+export function GetColorOfTheLogoByTeam(teamName: string): string {
+    switch (teamName) {
+      case 'X-Men':
+      case 'Supernatural':
+      case 'X-Men (Original)':
+        return 'rounded-full invert-0 dark:invert';
+  
+      // return 'rounded-full invert dark:invert-0';
+  
+      default: return '';
+    }
+  }
+  
+  export function GetColorLogosByPublisher(publisher: string): string {
+    switch (publisher) {
+      case 'Shueisha':
+      case 'George Lucas':
+        return 'invert dark:invert-0'
+  
+      case 'Dark Horse Comics':
+        return 'invert-0 dark:invert'
+  
+      default: return ''
+    }
+  }
+  
+  export function GetDimentionsOfTheLogoForCard(publisher: string): string {
+    // switch (publisher) {
+    //   case 'DC Comics' || 'Warner Bros' || 'Microsoft':
+    //     return 'h-[3rem] w-[3rem] sm:h-[5rem] sm:w-[5rem] md:h-[5rem] md:w-[5rem] lg:h-[5rem] lg:w-[5rem]'
+  
+    //   default:
+    //     return 'h-[7vw] w-[15vw] sm:h-[7vw] sm:w-[15vw] md:h-[3rem] md:w-[7rem] lg:h-[3rem] lg:w-[7rem]'
+    // }
+    return ""
+  }

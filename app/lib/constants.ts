@@ -213,7 +213,7 @@ export function getTeamByUniverse(universe: string): {name: string, value: strin
         {
           name: "X-Men (Original)",
           value: "X-Men (Original)",
-          img: "https://cdn.freebiesupply.com/logos/large/2x/x-men-logo-svg-vector.svg",
+          img: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/X_symbol_from_X-Men_logo.svg/240px-X_symbol_from_X-Men_logo.svg.png",
         },
         {
           name: "Young avengers",
@@ -434,3 +434,4 @@ export function getTeamByUniverse(universe: string): {name: string, value: strin
 
 const arrayOptions = ["name", "id", "_id", "powerstats.power", "powerstats.intelligence", "powerstats.strength", "powerstats.durability", "powerstats.combat", "powerstats.speed"]
 export const linkToCharactersPage = `/dashboard/characters?pageCharacters=${Math.floor(Math.random() * 179) + 1}&characterOrFullName=false&side=All&universe=All&sortBy=${arrayOptions[Math.floor(Math.random() * arrayOptions.length)]}&sortDirection=desc&team=All`
+// export const linkToCharactersPage = `/dashboard/characters`

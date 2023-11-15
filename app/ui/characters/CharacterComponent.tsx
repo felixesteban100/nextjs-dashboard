@@ -1,5 +1,6 @@
 import { publisherIMG } from '@/app/lib/charactersUtils';
 import { Character } from '@/app/lib/definitions';
+import { GetColorLogosByPublisher, GetDimentionsOfTheLogoForCard } from '@/app/lib/charactersUtils';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -42,16 +43,13 @@ export default function CharacterComponent({ currentCharacter }: CharacterProps)
                     </h2>
                     <Image
                         className={`
-                            ${currentCharacter.biography.publisher === "Shueisha" ? "invert dark:invert-0" : ""}
-                            ${currentCharacter.biography.publisher === "Dark Horse Comics" ? "invert-0 dark:invert " : ""}
-                            ${currentCharacter.biography.publisher === "DC Comics" || currentCharacter.biography.publisher === "Warner Bros" || currentCharacter.biography.publisher === "Microsoft" ?
-                                'h-[3rem] w-[3rem] sm:h-[5rem] sm:w-[5rem] md:h-[5rem] md:w-[5rem] lg:h-[5rem] lg:w-[5rem]'
-                                : 'h-[7vw] w-[15vw] sm:h-[7vw] sm:w-[15vw] md:h-[3rem] md:w-[7rem] lg:h-[3rem] lg:w-[7rem]'}
+                            ${GetColorLogosByPublisher(currentCharacter.biography.publisher)}
+                            ${GetDimentionsOfTheLogoForCard(currentCharacter.biography.publisher)}
                         `}
                         src={publisherIMG(currentCharacter.biography.publisher)}
                         alt={`Logo ${currentCharacter.biography.publisher}`}
-                        width={300}
-                        height={300}
+                        width={100}
+                        height={150}
                     />
                 </div>
             </div>

@@ -9,6 +9,7 @@ import { getQueryOptions } from '@/app/lib/data';
 import LoadingCharactersContent from '@/app/ui/characters/loaders/LoadingCharactersContent';
 import { getTeamByUniverse } from '@/app/lib/constants';
 import Image from 'next/image';
+import { GetColorOfTheLogoByTeam } from '@/app/lib/charactersUtils';
 
 export const metadata: Metadata = {
     title: 'Characters',
@@ -51,24 +52,24 @@ export default async function Page({
     return (
         <div className="w-full">
             <Sheet>
-                <div className="flex w-full items-center justify-between">
+                <div className="flex w-full items-center justify-between group/breadscrum">
                     <SheetTrigger asChild>
                         <div className='flex items-center justify-start gap-5'>
                             <h1 className={`${lusitana.className} text-2xl hover:underline cursor-pointer`}>Characters</h1>
-                            {/* {
+                            {
                                 teamInfo?.img !== undefined ?
                                     <div className='mx-auto w-full flex justify-center items-center gap-5'>
                                         <Image
                                             src={teamInfo.img}
-                                            width={100}
-                                            height={100}
-                                            className={`hover:absolute hover:w-[30vw] transition-all duration-300 ${teamInfo.name.toLowerCase().includes('x-men') || teamInfo.name.toLowerCase().includes('supernatural') ? "dark:invert" : ""}`}
+                                            width={500}
+                                            height={500}
+                                            className={`group-hover/breadscrum:w-[30vw] w-28 transition-all duration-300 ${GetColorOfTheLogoByTeam(teamInfo.name)}`}
                                             alt={teamInfo.value}
                                         />
                                     </div>
                                     :
                                     null
-                            } */}
+                            }
                         </div>
                     </SheetTrigger>
                 </div>

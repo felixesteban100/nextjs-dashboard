@@ -84,7 +84,7 @@ function FeatureTabComics({ selectedCharacter }: FeatureTabComicsProps) {
 }
 
 
-export function organizedComicsProperty(
+function organizedComicsProperty(
     comics: string[] | null | undefined,
     publisher: string
 ): string[] {

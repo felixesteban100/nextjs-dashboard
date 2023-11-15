@@ -1,5 +1,5 @@
 import { Suspense } from 'react';
-import { Metadata } from 'next';
+import { Metadata, ResolvingMetadata } from 'next';
 import CharacterInfo from '@/app/ui/characters/CharacterInfo';
 import LoadingCharacterInfo from '@/app/ui/characters/loaders/LoadingCharacterInfo';
 // import { lusitana } from '@/app/ui/fonts';
@@ -8,10 +8,26 @@ import LoadingCharacterInfo from '@/app/ui/characters/loaders/LoadingCharacterIn
 // import { ArrowBigLeft, ArrowBigRight } from 'lucide-react'
 import Breadcrumbs from "@/app/ui/invoices/breadcrumbs";
 import { linkToCharactersPage } from '@/app/lib/constants';
+import { fetchCharacterById } from '@/app/lib/data';
+ 
+type Props = {
+  params: { id: string }
+  searchParams: { [key: string]: string | string[] | undefined }
+}
 
-export const metadata: Metadata = {
-    title: 'Character',
-};
+// export const metadata: Metadata = {
+//     title: 'Character',
+// };
+
+export async function generateMetadata({ params, searchParams }: { params: { id: string }, searchParams: { image?: string } }){
+    const characterId = params.id || '70'
+
+    const character = await fetchCharacterById(characterId)
+   
+    return {
+      title: `${character ? character.name : "Not Found"}`,
+    }
+  }
 
 export default async function Page({ params, searchParams }: { params: { id: string }, searchParams: { image?: string } }) {
     const characterId = params.id || '70'

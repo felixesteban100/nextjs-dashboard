@@ -17,7 +17,7 @@ import { linkToCharactersPage } from '@/app/lib/constants';
 // Map of links to display in the side navigation.
 // Depending on the size of the application, this would be stored in a database.
 const links = [
-  { name: 'Home', href: '/dashboard', icon: HomeIcon },
+  // { name: 'Home', href: '/dashboard', icon: HomeIcon },
   {
     name: 'Invoices',
     href: '/dashboard/invoices',
@@ -42,7 +42,7 @@ export default function NavLinks() {
               `flex h-[48px] grow items-center justify-center gap-2 rounded-md bg-background p-3 text-sm font-medium hover:bg-muted-foreground/10 hover:text-primary md:flex-none md:justify-start md:p-2 md:px-3`,
               {
                 // 'bg-sky-100 text-blue-600': pathname.includes(link.href),
-                'bg-muted-foreground/10 text-primary': pathname === link.href,
+                'bg-muted-foreground/10 text-primary': new RegExp(`${link.href}`).test(pathname),
               }
             )}
           >

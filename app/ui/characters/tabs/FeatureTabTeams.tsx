@@ -4,6 +4,7 @@ import StatContainer from "../stats/StatContainer"
 import { getTeamByUniverse } from "@/app/lib/constants"
 import Link from "next/link"
 import Image from "next/image"
+import { GetColorOfTheLogoByTeam } from "@/app/lib/charactersUtils"
 
 type FeatureTabTeamsProps = {
     selectedCharacter: Character
@@ -32,24 +33,13 @@ function FeatureTabTeams({ selectedCharacter }: FeatureTabTeamsProps) {
                                                 className="mt-5 mx-auto flex gap-1 flex-col cursor-pointer group/items"
                                                 data-tip={teamFound.name}
                                             >
-                                                {teamFound.name.toLowerCase() === "x-men" || teamFound.name.toLowerCase() ===  "supernatural" ?
-                                                    <Image
-                                                        className="rounded-full dark:invert"
-                                                        width={500}
-                                                        height={500}
-                                                        src={teamFound?.img}
-                                                        alt={teamFound?.name}
-                                                    />
-                                                    :
-                                                    <Image
-                                                        // className="hover:pointer-events-none active:pointer-events-none"
-                                                        className=""
-                                                        width={500}
-                                                        height={500}
-                                                        src={teamFound?.img}
-                                                        alt={teamFound?.name}
-                                                    />
-                                                }
+                                                <Image
+                                                    className={`${GetColorOfTheLogoByTeam(teamFound.name)}`}
+                                                    width={500}
+                                                    height={500}
+                                                    src={teamFound?.img}
+                                                    alt={teamFound?.name}
+                                                />
                                                 <p className="font-semibold text-primary text-xl group-hover/items:underline">{teamFound?.name}</p>
                                             </Link>
                                         )

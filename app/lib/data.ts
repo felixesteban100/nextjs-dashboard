@@ -5,7 +5,6 @@ import { unstable_noStore as noStore } from "next/cache";
 import { sortByType, sortDirectionType } from "../ui/characters/FilterCharacters";
 import { CHARACTERS_PER_PAGE } from "./constants";
 import { collectionCharacters } from "./mongodb/mongodb";
-import { EstimatedDocumentCountOptions } from "mongodb";
 
 export async function fetchRevenue() {
   // Add noStore() here prevent the response from being cached.
@@ -272,15 +271,16 @@ export async function fetchCharacters(
   sortBy: sortByType,
   sortDirection: sortDirectionType
 ) {
-  noStore();
-
-  const offset = (currentPage - 1) * CHARACTERS_PER_PAGE;
+  // noStore();
+  
   try {
     // await new Promise((resolve) => setTimeout(resolve, 7000));
+    const offset = (currentPage - 1) * CHARACTERS_PER_PAGE;
+    
     const charactersToDisplay: Character[] = await collectionCharacters
       .find({ ...queryOptions })
-      .skip(offset)
       .sort({ [`${sortBy}`]: sortDirection as any })
+      .skip(offset)
       .limit(CHARACTERS_PER_PAGE)
       .toArray()
     return charactersToDisplay

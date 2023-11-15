@@ -115,10 +115,10 @@ export default function FilterCharacters() {
                             <FormItem className="w-[95%] mx-auto">
                                 <FormLabel>{form.getValues().characterOrFullName ? 'Full Name' : "Name"}</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="Batman|Iron Man|Spider-Man" {...field} />
+                                    <Input placeholder={form.getValues().characterOrFullName ? "Bruce|Tony|Peter" : "Batman|Iron Man|Spider-Man"} {...field} />
                                 </FormControl>
                                 <FormDescription>
-                                    Example: Batman|Iron Man|Spider-Man
+                                    Example: {form.getValues().characterOrFullName ? "Bruce|Tony|Peter" : "Batman|Iron Man|Spider-Man"}
                                 </FormDescription>
                                 <FormMessage />
                             </FormItem>
@@ -265,8 +265,8 @@ export default function FilterCharacters() {
                                     </FormControl>
                                     <SelectContent>
                                         <ScrollArea className="h-[200px]">
-                                            {ALLUNIVERSE.map((c) => (
-                                                <SelectItem key={c.value} value={c.value}>{c.name}</SelectItem>
+                                            {ALLUNIVERSE.map((c, index) => (
+                                                <SelectItem key={`${c.value}-${index}`} value={c.value}>{c.name}</SelectItem>
                                             ))}
                                         </ScrollArea>
                                     </SelectContent>
@@ -296,8 +296,8 @@ export default function FilterCharacters() {
                                             <SelectContent>
                                                 <ScrollArea className="h-[200px]">
                                                     <SelectItem value="All">All teams</SelectItem>
-                                                    {teamByUniverse.map((c) => (
-                                                        <SelectItem key={c.value} value={c.value}>{c.name}</SelectItem>
+                                                    {teamByUniverse.map((c, index) => (
+                                                        <SelectItem key={`${c.value}-${index}`} value={c.value}>{c.name}</SelectItem>
                                                     ))}
                                                 </ScrollArea>
                                             </SelectContent>
