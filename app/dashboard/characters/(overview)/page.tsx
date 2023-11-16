@@ -79,39 +79,44 @@ export default async function Page({
     return (
         <div className="w-full">
             <Sheet>
-                <div className="flex w-full items-center justify-between group/breadscrum">
+                <div className=" w-full items-center justify-between group/breadscrum">
                     <SheetTrigger asChild>
-                        <div className='flex items-center justify-start gap-5'>
-                            
-                            {
-                                teamInfo?.img !== undefined ?
-                                    <div className='mx-auto w-full flex justify-center items-center gap-5 ml-20'>
-                                        <Image
-                                            src={teamInfo.img}
-                                            width={500}
-                                            height={500}
-                                            // className={`group-hover/breadscrum:w-[30vw] w-28 transition-all duration-300 ${GetColorOfTheLogoByTeam(teamInfo.name)}`}
-                                            className={`group-hover/breadscrum:h-32 h-28 w-auto transition-all duration-300 ${GetColorOfTheLogoByTeam(teamInfo.name)}`}
-                                            alt={teamInfo.value}
-                                        />
-                                    </div>
-                                    :
-                                    publisherLogo !== "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRykZHBER1nS5QMUGvv0qJCJFuqtf5wPrliiiE_1hMMbCwvONjVOaYloiVHMeCyH710z7g&usqp=CAU" ?
-                                        <div className='mx-auto w-full flex justify-center items-center gap-5 ml-20'>
-                                            <Image
-                                                src={publisherLogo}
-                                                width={500}
-                                                height={500}
-                                                // className={`group-hover/breadscrum:w-[30vw] w-28 transition-all duration-300 ${GetColorOfTheLogoByTeam(teamInfo.name)}`}
-                                                className={`group-hover/breadscrum:h-32 h-28 w-auto transition-all duration-300 ${GetColorLogosByPublisher(universe)}`}
-                                                alt='publisherLogo'
-                                            />
-                                        </div>
-                                        :
-                                        <h1 className={`${lusitana.className} text-2xl hover:underline cursor-pointer`}>Characters</h1>
-                            }
+                        <div className='flex items-center justify-start group-breadcrum mb-5'>
+                            <h1 className={`${lusitana.className} text-xl md:text-2xl group-hover/breadscrum:underline cursor-pointer`}>Characters</h1>
+                            { universe !== "All" && <p>&nbsp; / &nbsp;</p> }
+                            { universe !== "All" && <h1 className={`${team === "All" ? "text-primary" : ""} ${lusitana.className} text-xl md:text-2xl group-hover/breadscrum:underline cursor-pointer`}>{universe}</h1>}
+                            { team !== "All" && <p>&nbsp; / &nbsp;</p> }
+                            { team !== "All" && <h1 className={`${lusitana.className} text-primary text-xl md:text-2xl group-hover/breadscrum:underline cursor-pointer`}>{team}</h1>}
                         </div>
                     </SheetTrigger>
+                    {
+                        teamInfo?.img !== undefined ?
+                            <div className='w-full flex justify-center items-center gap-5'>
+                                <Image
+                                    src={teamInfo.img}
+                                    width={500}
+                                    height={500}
+                                    // className={`group-hover/breadscrum:w-[30vw] w-28 transition-all duration-300 ${GetColorOfTheLogoByTeam(teamInfo.name)}`}
+                                    // className={`group-hover/breadscrum:h-32 h-28 w-auto transition-all duration-300 ${GetColorOfTheLogoByTeam(teamInfo.name)}`}
+                                    className={`h-28 w-auto transition-all duration-300 ${GetColorOfTheLogoByTeam(teamInfo.name)}`}
+                                    alt={teamInfo.value}
+                                />
+                            </div>
+                            :
+                            publisherLogo !== "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRykZHBER1nS5QMUGvv0qJCJFuqtf5wPrliiiE_1hMMbCwvONjVOaYloiVHMeCyH710z7g&usqp=CAU" ?
+                                <div className='w-full flex justify-center items-center gap-5'>
+                                    <Image
+                                        src={publisherLogo}
+                                        width={500}
+                                        height={500}
+                                        // className={`group-hover/breadscrum:w-[30vw] w-28 transition-all duration-300 ${GetColorOfTheLogoByTeam(teamInfo.name)}`}
+                                        className={`group-hover/breadscrum:h-32 h-28 w-auto transition-all duration-300 ${GetColorLogosByPublisher(universe)}`}
+                                        alt='publisherLogo'
+                                    />
+                                </div>
+                                :
+                                null
+                    }
                 </div>
                 <SheetContent>
                     <SheetHeader>
