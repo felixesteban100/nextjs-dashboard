@@ -30,7 +30,8 @@ export async function fetchRevenue() {
 }
 
 export async function fetchLatestInvoices() {
-  noStore();
+  // noStore();
+
 
   try {
     // const data = await sql<LatestInvoiceRaw>`
@@ -48,6 +49,7 @@ export async function fetchLatestInvoices() {
       JOIN customers ON invoices.customer_id = customers.id
       ORDER BY invoices.date DESC
       LIMIT 5`;
+
 
     // console.log("Data fetch complete after 5 seconds.");
 
@@ -254,8 +256,9 @@ export async function fetchFilteredCustomers(query: string) {
 }
 
 export async function fetchCharacterById(characterSelectedId: string) {
-  noStore();
+  // noStore();
   try {
+    // console.log("fetchCharacterById")
     const selectedCharacter = await collectionCharacters.findOne({ id: parseInt(characterSelectedId) })
     return selectedCharacter
   } catch (error) {
@@ -272,18 +275,18 @@ export async function fetchCharacters(
   sortDirection: sortDirectionType
 ) {
   // noStore();
-  
+
   try {
     // await new Promise((resolve) => setTimeout(resolve, 7000));
     const offset = (currentPage - 1) * CHARACTERS_PER_PAGE;
-    
+
     const charactersToDisplay: Character[] = await collectionCharacters
       .find({ ...queryOptions })
       .sort({ [`${sortBy}`]: sortDirection as any })
       .skip(offset)
-      .limit(CHARACTERS_PER_PAGE)
+      // .limit(CHARACTERS_PER_PAGE)
       .toArray()
-    return charactersToDisplay
+    return charactersToDisplay.slice(0, CHARACTERS_PER_PAGE)
   } catch (error) {
     console.error(error);
     throw Error(`MongoDB Connection Error: ${error}`);
@@ -293,10 +296,16 @@ export async function fetchCharacters(
 export async function fetchPages(
   queryOptions: QueryOptions
 ) {
+  // noStore()
+  try {
+    const characterdDisplayLenght = await collectionCharacters.countDocuments(queryOptions)
+    const totalPages = Math.ceil(characterdDisplayLenght / CHARACTERS_PER_PAGE);
+    return totalPages
+  } catch (error) {
+    console.error(error);
+    throw Error(`MongoDB Connection Error: ${error}`);
+  }
 
-  const characterdDisplayLenght = await collectionCharacters.countDocuments(queryOptions)
-  const totalPages = Math.ceil(characterdDisplayLenght / CHARACTERS_PER_PAGE);
-  return totalPages
 }
 
 export function getQueryOptions(

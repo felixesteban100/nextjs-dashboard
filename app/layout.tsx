@@ -13,11 +13,11 @@ export const metadata: Metadata = {
 };
 
 //TODO:
-// in the [id] page save the tab selected using params
-// modify the database and remove the teams with parentesis in the names
 // add page transition
 // add all the filters in the sheet (filterCharacters.tsx)
 // add google provider for auth use this docs for guidance: https://authjs.dev/reference/core/providers_google (nextjs 14 doesn't have support for that :-|)
+// in the [id] page save the tab selected using params
+// modify the database and remove the teams with parentesis in the names [DONE, FOR THE MOST PART I GUESS]
 
 export default function RootLayout({
   children,

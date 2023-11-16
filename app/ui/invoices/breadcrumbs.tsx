@@ -4,7 +4,7 @@ import { lusitana } from '@/app/ui/fonts';
 
 interface Breadcrumb {
   label: string;
-  href: string;
+  href?: string;
   active?: boolean;
 }
 
@@ -18,13 +18,17 @@ export default function Breadcrumbs({
       <ol className={clsx(lusitana.className, 'flex text-xl md:text-2xl')}>
         {breadcrumbs.map((breadcrumb, index) => (
           <li
-            key={breadcrumb.href}
+            key={breadcrumb.label}
             aria-current={breadcrumb.active}
             className={clsx(
               breadcrumb.active ? 'text-primary' : 'text-muted-foreground',
             )}
           >
-            <Link href={breadcrumb.href}>{breadcrumb.label}</Link>
+            {breadcrumb.href ?
+              <Link href={breadcrumb.href}>{breadcrumb.label}</Link>
+              :
+              <div>{breadcrumb.label}</div>
+            }
             {index < breadcrumbs.length - 1 ? (
               <span className="mx-3 inline-block">/</span>
             ) : null}

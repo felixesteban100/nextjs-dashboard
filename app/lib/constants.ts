@@ -49,7 +49,7 @@ export function getTeamByUniverse(universe: string): {name: string, value: strin
         {
           name: "Asgardians",
           value: "Asgardians",
-          img: "https://cdna.artstation.com/p/assets/images/images/038/379/120/large/nicholas-russell-asgardiansofthegalaxy-logo.jpg?1622926425",
+          img: "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/a21c2816-49d4-4a5b-b6db-7634a5ea8671/deqsmlv-740da833-0582-4672-9c63-a58f1f79565c.png/v1/fill/w_638,h_604/asgard_logo_by_spiderbyte64_deqsmlv-fullview.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9NjA0IiwicGF0aCI6IlwvZlwvYTIxYzI4MTYtNDlkNC00YTViLWI2ZGItNzYzNGE1ZWE4NjcxXC9kZXFzbWx2LTc0MGRhODMzLTA1ODItNDY3Mi05YzYzLWE1OGYxZjc5NTY1Yy5wbmciLCJ3aWR0aCI6Ijw9NjM4In1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmltYWdlLm9wZXJhdGlvbnMiXX0.R5bMAGrtXXim7EM_A84hkucgZewYCUOzB8_Uevmkwlc",
         },
         {
           name: "Avengers",
@@ -57,8 +57,8 @@ export function getTeamByUniverse(universe: string): {name: string, value: strin
           img: "https://1000logos.net/wp-content/uploads/2019/05/Avengers-Logo-2015.png",
         },
         {
-          name: "Avengers (Original)",
-          value: "Avengers (Original)",
+          name: "Avengers-Original",
+          value: "Avengers-Original",
           img: "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/627fe721-846f-4f75-ac61-111ca00b27dd/dd5vtke-4242c01a-acb6-49d6-8952-5f78313b7da0.png/v1/fill/w_1280,h_603/avengers__2019_logo__by_alanmac95_dd5vtke-fullview.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9NjAzIiwicGF0aCI6IlwvZlwvNjI3ZmU3MjEtODQ2Zi00Zjc1LWFjNjEtMTExY2EwMGIyN2RkXC9kZDV2dGtlLTQyNDJjMDFhLWFjYjYtNDlkNi04OTUyLTVmNzgzMTNiN2RhMC5wbmciLCJ3aWR0aCI6Ijw9MTI4MCJ9XV0sImF1ZCI6WyJ1cm46c2VydmljZTppbWFnZS5vcGVyYXRpb25zIl19.D_rCPgMAzwI7axRhtrx9tzc24PXQR0lRzU637xqkkoA",
         },
         {
@@ -87,8 +87,8 @@ export function getTeamByUniverse(universe: string): {name: string, value: strin
           img: "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/82d0ec62-144a-47ae-aebb-f112f2a3b50b/ddghfpv-954536f0-f6f2-45c9-9f3a-468e21363b42.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzgyZDBlYzYyLTE0NGEtNDdhZS1hZWJiLWYxMTJmMmEzYjUwYlwvZGRnaGZwdi05NTQ1MzZmMC1mNmYyLTQ1YzktOWYzYS00NjhlMjEzNjNiNDIucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.cfqvk-n8nviTwKKScn8a-iJ-Qx1sR_fa9DWOKXx9TBA",
         },
         {
-          name: "Fantastic Four(Original)",
-          value: "Fantastic Four(Original)",
+          name: "Fantastic Four-Original",
+          value: "Fantastic Four-Original",
           img: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Fantastic_Four_logo_%28blue_and_white%29.svg/800px-Fantastic_Four_logo_%28blue_and_white%29.svg.png",
         },
         {
@@ -99,7 +99,7 @@ export function getTeamByUniverse(universe: string): {name: string, value: strin
         {
           name: "Guardians of the Galaxy",
           value: "Guardians of the Galaxy",
-          img: "https://i.pinimg.com/originals/fe/e6/fa/fee6fa98ccec5fa47a152bbc94bec79f.jpg",
+          img: "https://static.wikia.nocookie.net/logopedia/images/2/2d/GOTG_merch_logo.png/revision/latest/scale-to-width-down/1200?cb=20190430131028",
         },
         {
           name: "Heroes For Hire",
@@ -140,7 +140,7 @@ export function getTeamByUniverse(universe: string): {name: string, value: strin
         {
           name: "Midnight Sons",
           value: "Midnight Sons",
-          img: "https://thecosmiccircus.com/wp-content/uploads/2021/08/midnight-suns-launch-announce-article-card.jpeg",
+          img: "https://image.api.playstation.com/vulcan/ap/rnd/202108/1723/0gPKGnGXftV59bXu6NgH9wXA.png",
         },
         {
           name: "MCU Villains",
@@ -211,8 +211,8 @@ export function getTeamByUniverse(universe: string): {name: string, value: strin
           img: "https://seeklogo.com/images/X/x-men-logo-F16A0D1D4D-seeklogo.com.png",
         },
         {
-          name: "X-Men (Original)",
-          value: "X-Men (Original)",
+          name: "X-Men-Original",
+          value: "X-Men-Original",
           img: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/X_symbol_from_X-Men_logo.svg/240px-X_symbol_from_X-Men_logo.svg.png",
         },
         {
@@ -270,8 +270,8 @@ export function getTeamByUniverse(universe: string): {name: string, value: strin
           img: "https://heroichollywood.com/wp-content/uploads/2017/09/justice-league-logo-square-4.jpg",
         },
         {
-          name: "Justice League (Original)",
-          value: "Justice League (Original)",
+          name: "Justice League-Original",
+          value: "Justice League-Original",
           img: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Justice_League_2017_film_logo.svg/2395px-Justice_League_2017_film_logo.svg.png",
         },
         {
@@ -432,6 +432,8 @@ export function getTeamByUniverse(universe: string): {name: string, value: strin
   }
 }
 
-const arrayOptions = ["name", "id", "_id", "powerstats.power", "powerstats.intelligence", "powerstats.strength", "powerstats.durability", "powerstats.combat", "powerstats.speed"]
-export const linkToCharactersPage = `/dashboard/characters?pageCharacters=${Math.floor(Math.random() * 179) + 1}&characterOrFullName=false&side=All&universe=All&sortBy=${arrayOptions[Math.floor(Math.random() * arrayOptions.length)]}&sortDirection=desc&team=All`
-// export const linkToCharactersPage = `/dashboard/characters`
+// const arrayOptions = ["name", "id", "_id", "powerstats.power", "powerstats.intelligence", "powerstats.strength", "powerstats.durability", "powerstats.combat", "powerstats.speed"]
+// export const linkToCharactersPage = `/dashboard/characters?pageCharacters=${Math.floor(Math.random() * 179) + 1}&characterOrFullName=false&side=All&universe=All&sortBy=${arrayOptions[Math.floor(Math.random() * arrayOptions.length)]}&sortDirection=desc&team=All`
+// export const linkToCharactersPage = `/dashboard/characters?pageCharacters=${Math.floor(Math.random() * 179) + 1}&characterOrFullName=false&side=All&universe=All&sortBy=_id&sortDirection=desc&team=All`
+// export const linkToCharactersPage = `/dashboard/characters?pageCharacters=1&characterOrFullName=false&side=All&universe=All&sortBy=_id&sortDirection=desc&team=All`
+export const linkToCharactersPage = `/dashboard/characters`

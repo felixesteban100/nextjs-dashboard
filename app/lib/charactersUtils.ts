@@ -64,9 +64,12 @@ export function publisherIMG(publisher: string) {
 export function GetColorOfTheLogoByTeam(teamName: string): string {
     switch (teamName) {
       case 'X-Men':
+        return 'rounded-full invert-0 dark:invert';
       case 'Supernatural':
       case 'X-Men (Original)':
-        return 'rounded-full invert-0 dark:invert';
+      case 'Midnight Sons':
+        return 'invert-0 dark:invert';
+
   
       // return 'rounded-full invert dark:invert-0';
   

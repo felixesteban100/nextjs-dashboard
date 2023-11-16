@@ -9,25 +9,25 @@ import LoadingCharacterInfo from '@/app/ui/characters/loaders/LoadingCharacterIn
 import Breadcrumbs from "@/app/ui/invoices/breadcrumbs";
 import { linkToCharactersPage } from '@/app/lib/constants';
 import { fetchCharacterById } from '@/app/lib/data';
- 
+
 type Props = {
-  params: { id: string }
-  searchParams: { [key: string]: string | string[] | undefined }
+    params: { id: string }
+    searchParams: { [key: string]: string | string[] | undefined }
 }
 
 // export const metadata: Metadata = {
 //     title: 'Character',
 // };
 
-export async function generateMetadata({ params, searchParams }: { params: { id: string }, searchParams: { image?: string } }){
+export async function generateMetadata({ params, searchParams }: { params: { id: string }, searchParams: { image?: string } }) {
     const characterId = params.id || '70'
 
     const character = await fetchCharacterById(characterId)
-   
+
     return {
-      title: `${character ? character.name : "Not Found"}`,
+        title: `${character ? character.name : "Not Found"}`,
     }
-  }
+}
 
 export default async function Page({ params, searchParams }: { params: { id: string }, searchParams: { image?: string } }) {
     const characterId = params.id || '70'
@@ -36,14 +36,14 @@ export default async function Page({ params, searchParams }: { params: { id: str
         <div>
             <Breadcrumbs
                 breadcrumbs={[
-                    { 
-                        label: 'Characters', 
+                    {
+                        label: 'Characters',
                         // href: '/dashboard/characters' 
-                        href: linkToCharactersPage 
+                        href: linkToCharactersPage
                     },
                     {
                         label: `Character-${characterId}`,
-                        href: `/dashboard/characters/${characterId}`,
+                        // href: `/dashboard/characters/${characterId}`,
                         active: true,
                     },
                 ]}

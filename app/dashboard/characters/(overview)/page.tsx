@@ -9,11 +9,36 @@ import { getQueryOptions } from '@/app/lib/data';
 import LoadingCharactersContent from '@/app/ui/characters/loaders/LoadingCharactersContent';
 import { getTeamByUniverse } from '@/app/lib/constants';
 import Image from 'next/image';
-import { GetColorOfTheLogoByTeam } from '@/app/lib/charactersUtils';
+import { GetColorLogosByPublisher, GetColorOfTheLogoByTeam, publisherIMG } from '@/app/lib/charactersUtils';
 
-export const metadata: Metadata = {
-    title: 'Characters',
-};
+// export const metadata: Metadata = {
+//     title: 'Characters',
+// };
+
+export function generateMetadata({
+    searchParams,
+}: {
+    searchParams?: {
+        query?: string;
+        page?: string;
+        pageCharacters?: string;
+
+        characterOrFullName?: string,
+        characterName?: string;
+        howMany?: string;
+        side?: string;
+        universe?: string;
+        team?: string;
+
+        sortBy?: sortByType;
+        sortDirection?: sortDirectionType;
+    }
+}) {
+
+    return {
+        title: `${searchParams?.team && searchParams?.team !== "All" ? searchParams?.team : searchParams?.universe && searchParams?.universe !== "All" ? searchParams?.universe : "Characters"}`,
+    }
+}
 
 export default async function Page({
     searchParams,
@@ -49,26 +74,41 @@ export default async function Page({
 
     const teamInfo = getTeamByUniverse(universe).filter((c) => c.name === team)[0]
 
+    const publisherLogo = publisherIMG(universe)
+
     return (
         <div className="w-full">
             <Sheet>
                 <div className="flex w-full items-center justify-between group/breadscrum">
                     <SheetTrigger asChild>
                         <div className='flex items-center justify-start gap-5'>
-                            <h1 className={`${lusitana.className} text-2xl hover:underline cursor-pointer`}>Characters</h1>
+                            
                             {
                                 teamInfo?.img !== undefined ?
-                                    <div className='mx-auto w-full flex justify-center items-center gap-5'>
+                                    <div className='mx-auto w-full flex justify-center items-center gap-5 ml-20'>
                                         <Image
                                             src={teamInfo.img}
                                             width={500}
                                             height={500}
-                                            className={`group-hover/breadscrum:w-[30vw] w-28 transition-all duration-300 ${GetColorOfTheLogoByTeam(teamInfo.name)}`}
+                                            // className={`group-hover/breadscrum:w-[30vw] w-28 transition-all duration-300 ${GetColorOfTheLogoByTeam(teamInfo.name)}`}
+                                            className={`group-hover/breadscrum:h-32 h-28 w-auto transition-all duration-300 ${GetColorOfTheLogoByTeam(teamInfo.name)}`}
                                             alt={teamInfo.value}
                                         />
                                     </div>
                                     :
-                                    null
+                                    publisherLogo !== "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRykZHBER1nS5QMUGvv0qJCJFuqtf5wPrliiiE_1hMMbCwvONjVOaYloiVHMeCyH710z7g&usqp=CAU" ?
+                                        <div className='mx-auto w-full flex justify-center items-center gap-5 ml-20'>
+                                            <Image
+                                                src={publisherLogo}
+                                                width={500}
+                                                height={500}
+                                                // className={`group-hover/breadscrum:w-[30vw] w-28 transition-all duration-300 ${GetColorOfTheLogoByTeam(teamInfo.name)}`}
+                                                className={`group-hover/breadscrum:h-32 h-28 w-auto transition-all duration-300 ${GetColorLogosByPublisher(universe)}`}
+                                                alt='publisherLogo'
+                                            />
+                                        </div>
+                                        :
+                                        <h1 className={`${lusitana.className} text-2xl hover:underline cursor-pointer`}>Characters</h1>
                             }
                         </div>
                     </SheetTrigger>

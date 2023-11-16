@@ -54,7 +54,7 @@ export default function FilterCharacters() {
             team: searchParams.get('team') || 'All',
 
             sortBy: searchParams.get('sortBy') ?? "id",
-            sortDirection: searchParams.get('sortDirection') ?? "asc"
+            sortDirection: searchParams.get('sortDirection') ?? "desc"
         },
     })
 
