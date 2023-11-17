@@ -54,6 +54,8 @@ export default async function Page({
         side?: string;
         universe?: string;
         team?: string;
+        gender?: string;
+        race?: string;
 
         sortBy?: sortByType;
         sortDirection?: sortDirectionType;
@@ -65,12 +67,15 @@ export default async function Page({
     const side = searchParams?.side || "All"
     const universe = searchParams?.universe || "All"
     const team = searchParams?.team || "All"
+    const gender = searchParams?.gender || "both"
+    const race = searchParams?.race || "both"
+
 
     const currentPage = Number(searchParams?.pageCharacters) || 1;
     const sortBy = searchParams?.sortBy || '_id';
     const sortDirection = searchParams?.sortDirection || 'desc';
 
-    const queryOptions: QueryOptions = getQueryOptions(characterName, side, universe, team, 'both', 'All', characterOrFullName)
+    const queryOptions: QueryOptions = getQueryOptions(characterName, side, universe, team, gender, race, characterOrFullName)
 
     const teamInfo = getTeamByUniverse(universe).filter((c) => c.name === team)[0]
 

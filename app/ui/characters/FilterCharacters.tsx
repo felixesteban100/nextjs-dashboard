@@ -15,7 +15,7 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import { ALLUNIVERSE, getTeamByUniverse } from "@/app/lib/constants"
+import { ALLALIGMENTS, ALLGENDERS, ALLRACES, ALLUNIVERSE, getTeamByUniverse } from "@/app/lib/constants"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
@@ -27,6 +27,8 @@ const formSchema = z.object({
     side: z.string(),
     universe: z.string(),
     team: z.string(),
+    gender: z.string(),
+    race: z.string(),
 
     // sortBy: z.enum(sortByValues),
     sortBy: z.string(),
@@ -52,6 +54,8 @@ export default function FilterCharacters() {
             side: searchParams.get('side') ?? "All",
             universe: searchParams.get('universe') ?? "All",
             team: searchParams.get('team') || 'All',
+            gender: searchParams.get('gender') || 'both',
+            race: searchParams.get('race') || 'All',
 
             sortBy: searchParams.get('sortBy') ?? "id",
             sortDirection: searchParams.get('sortDirection') ?? "desc"
@@ -59,7 +63,7 @@ export default function FilterCharacters() {
     })
 
     const sortByValues = ["name", "id", "_id", "powerstats.power", "powerstats.intelligence", "powerstats.strength", "powerstats.durability", "powerstats.combat", "powerstats.speed"]
-    const sideValues = ["All", "good", "bad", "neutral"]
+    // const sideValues = ["All", "good", "bad", "neutral"]
     const teamByUniverse: { name: string, value: string }[] = getTeamByUniverse(form.watch().universe)
 
     function onSubmit(values: z.infer<typeof formSchema>) {
@@ -94,6 +98,18 @@ export default function FilterCharacters() {
         } else {
             params.delete('universe')
             params.delete('team')
+        }
+
+        if (values.gender !== "") {
+            params.set('gender', values.gender)
+        } else {
+            params.delete('gender')
+        }
+
+        if (values.race !== "") {
+            params.set('race', values.race)
+        } else {
+            params.delete('race')
         }
 
         params.set('sortBy', values.sortBy)
@@ -232,13 +248,67 @@ export default function FilterCharacters() {
                                         </SelectTrigger>
                                     </FormControl>
                                     <SelectContent>
-                                        {sideValues.map((c) => (
-                                            <SelectItem key={c} value={c}>{c}</SelectItem>
+                                        {ALLALIGMENTS.map((c) => (
+                                            <SelectItem key={c.value} value={c.value}>{c.name}</SelectItem>
                                         ))}
                                     </SelectContent>
                                 </Select>
                                 <FormDescription>
                                     Example: good, bad, neutral
+                                </FormDescription>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+
+                    <FormField
+                        control={form.control}
+                        name="gender"
+                        render={({ field }) => (
+                            <FormItem className="w-[95%] mx-auto mt-5">
+                                <FormLabel>Gender</FormLabel>
+                                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                    <FormControl>
+                                        <SelectTrigger>
+                                            <SelectValue placeholder="Select a gender" />
+                                        </SelectTrigger>
+                                    </FormControl>
+                                    <SelectContent>
+                                        {ALLGENDERS.map((c) => (
+                                            <SelectItem key={c.value} value={c.value}>{c.name}</SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                                <FormDescription>
+                                    Example: both, female, male
+                                </FormDescription>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+
+                    <FormField
+                        control={form.control}
+                        name="race"
+                        render={({ field }) => (
+                            <FormItem className="w-[95%] mx-auto mt-5">
+                                <FormLabel>Race</FormLabel>
+                                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                    <FormControl>
+                                        <SelectTrigger>
+                                            <SelectValue placeholder="Select a race" />
+                                        </SelectTrigger>
+                                    </FormControl>
+                                    <SelectContent>
+                                        <ScrollArea className="h-[200px]">
+                                            {ALLRACES.map((c) => (
+                                                <SelectItem key={c.value} value={c.value}>{c.name}</SelectItem>
+                                            ))}
+                                        </ScrollArea>
+                                    </SelectContent>
+                                </Select>
+                                <FormDescription>
+                                    Example: human, alien, kryptonian...
                                 </FormDescription>
                                 <FormMessage />
                             </FormItem>
